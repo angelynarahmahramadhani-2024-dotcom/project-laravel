@@ -67,6 +67,16 @@ class SiteController extends Controller
         return view('Admin.Pet.Pet'); 
     }
 
+    public function Role()
+    {
+        return view('Admin.Role.Role'); 
+    }
+
+    public function RoleUser()
+    {
+        return view('Admin.User.User'); 
+    }
+    
     public function cekkoneksi()
     {
         try {

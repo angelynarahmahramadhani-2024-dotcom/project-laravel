@@ -9,6 +9,8 @@ use App\Http\Controllers\Admin\KategoriController;
 use App\Http\Controllers\Admin\KategoriKlinisController;
 use App\Http\Controllers\Admin\KodeTindakanTerapiController;
 use App\Http\Controllers\Admin\PetController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\RoleUserController;
 
 
 Route::get('/', [SiteController::class, 'home'])->name('home');
@@ -23,5 +25,7 @@ Route::get('/Kategori', [KategoriController::class, 'index'])->name('Kategori');
 Route::get('/KategoriKlinis', [KategoriKlinisController::class, 'index'])->name('KategoriKlinis');
 Route::get('/KodeTindakanTerapi', [KodeTindakanTerapiController::class, 'index'])->name('KodeTindakanTerapi');
 Route::get('/pet', [PetController::class, 'index'])->name('pet');
+Route::get('/Role', [RoleController::class, 'index'])->name('Role');
+Route::get('/RoleUser', [RoleUserController::class, 'index'])->name('RoleUser');
 Route::get('/cekkoneksi', [SiteController::class, 'cekkoneksi'])->name('cekkoneksi');
 
