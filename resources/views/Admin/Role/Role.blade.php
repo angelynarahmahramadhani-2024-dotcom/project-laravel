@@ -1,30 +1,39 @@
 @extends('layout.main')
 
-@section('title', 'Daftar Role | RSHP UNAIR')
+@section('title', 'Daftar Role RSHP')
 
 @section('content')
-<section class="py-5" style="background-color:#fffaf5;">
-  <div class="container text-center">
-    <h2 class="fw-bold mb-4" style="color:#2563eb;">🎭 Daftar Role RSHP</h2>
+<div class="container py-5">
+  <h2 class="text-center fw-bold text-primary mb-4">🧩 Daftar Role RSHP</h2>
 
-    <div class="table-responsive shadow-lg rounded-4">
-      <table class="table table-bordered align-middle">
-        <thead style="background:linear-gradient(to right,#60a5fa,#a78bfa,#f472b6); color:white;">
-          <tr>
-            <th>ID Role</th>
-            <th>Nama Role</th>
-          </tr>
-        </thead>
-        <tbody style="background-color:white;">
-          @foreach($data as $r)
-          <tr>
-            <td>{{ $r->idrole }}</td>
-            <td>{{ $r->nama_role }}</td>
-          </tr>
-          @endforeach
-        </tbody>
-      </table>
-    </div>
+  <div class="text-end mb-3">
+    <a href="{{ route('role.create') }}" class="btn btn-primary">+ Tambah Role</a>
   </div>
-</section>
+
+  @if(session('success'))
+    <div class="alert alert-success">{{ session('success') }}</div>
+  @endif
+
+  <table class="table table-bordered text-center align-middle shadow-sm bg-white">
+    <thead class="table-primary">
+      <tr>
+        <th>ID</th>
+        <th>Nama Role</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach($data as $item)
+      <tr>
+        <td>{{ $item->idrole }}</td>
+        <td>{{ $item->nama_role }}</td>
+        <td>
+          <a href="{{ route('role.edit', $item->idrole) }}" class="btn btn-warning btn-sm">✏️ Edit</a>
+          <a href="{{ route('role.delete', $item->idrole) }}" onclick="return confirm('Yakin ingin hapus role ini?')" class="btn btn-danger btn-sm">🗑 Hapus</a>
+        </td>
+      </tr>
+      @endforeach
+    </tbody>
+  </table>
+</div>
 @endsection

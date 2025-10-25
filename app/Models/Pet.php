@@ -4,9 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Pemilik;
-use App\Models\RasHewan;
-
 
 class Pet extends Model
 {
@@ -14,6 +11,8 @@ class Pet extends Model
 
     protected $table = 'pet';
     protected $primaryKey = 'idpet';
+    public $timestamps = false;
+
     protected $fillable = [
         'nama',
         'tanggal_lahir',
@@ -25,11 +24,11 @@ class Pet extends Model
 
     public function pemilik()
     {
-        return $this->belongsTo(Pemilik::class, 'idpemilik', 'idpemilik');
+        return $this->belongsTo(Pemilik::class, 'idpemilik');
     }
 
     public function rasHewan()
     {
-        return $this->belongsTo(RasHewan::class, 'idras_hewan', 'idras_hewan');
+        return $this->belongsTo(RasHewan::class, 'idras_hewan');
     }
 }

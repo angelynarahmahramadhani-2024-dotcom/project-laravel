@@ -4,8 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Kategori;
-use App\Models\KategoriKlinis;
 
 class KodeTindakanTerapi extends Model
 {
@@ -13,7 +11,14 @@ class KodeTindakanTerapi extends Model
 
     protected $table = 'kode_tindakan_terapi';
     protected $primaryKey = 'idkode_tindakan_terapi';
-    protected $fillable = ['kode', 'deskripsi_tindakan_terapi', 'idkategori', 'idkategori_klinis'];
+    public $timestamps = false;
+
+    protected $fillable = [
+        'kode',
+        'deskripsi_tindakan_terapi',
+        'idkategori',
+        'idkategori_klinis'
+    ];
 
     public function kategori()
     {

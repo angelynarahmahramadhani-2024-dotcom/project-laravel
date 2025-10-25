@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\RasHewan;
 
 class RasHewan extends Model
 {
@@ -14,8 +13,11 @@ class RasHewan extends Model
     protected $primaryKey = 'idras_hewan';
     protected $fillable = ['nama_ras', 'idjenis_hewan'];
 
+    public $timestamps = false;
+
+    // relasi ke JenisHewan
     public function jenisHewan()
     {
-        return $this->belongsTo(JenisHewan::class, 'idjenis_hewan', 'idjenis_hewan');
+        return $this->belongsTo(JenisHewan::class, 'idjenis_hewan');
     }
 }

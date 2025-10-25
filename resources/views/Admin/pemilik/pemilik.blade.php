@@ -1,32 +1,47 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <title>Data Pemilik</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="p-4">
-  <h2 class="mb-4 text-center text-primary">🐾 Daftar Pemilik Hewan</h2>
+@extends('layout.main')
 
-  <table class="table table-bordered table-striped text-center align-middle">
-      <thead class="table-primary">
-          <tr>
-              <th>No</th>
-              <th>Nama Pemilik</th>
-              <th>No. WA</th>
-              <th>Alamat</th>
-          </tr>
+@section('title', 'Daftar Pemilik Hewan')
+
+@section('content')
+<section class="py-5" style="background-color:#fffaf5;">
+  <div class="container">
+    <h2 class="fw-bold text-center mb-4" style="color:#2563eb;">🐾 Daftar Pemilik Hewan</h2>
+
+    @if(session('success'))
+      <div class="alert alert-success text-center">{{ session('success') }}</div>
+    @endif
+
+    <div class="text-end mb-3">
+      <a href="{{ route('pemilik.create') }}" class="btn btn-primary">+ Tambah Pemilik</a>
+    </div>
+
+    <table class="table table-bordered table-striped align-middle">
+      <thead class="table-primary text-center">
+        <tr>
+          <th>ID</th>
+          <th>Nama User</th>
+          <th>Alamat</th>
+          <th>No. WA</th>
+          <th>Aksi</th>
+        </tr>
       </thead>
-      <tbody>
-          @foreach ($pemilik as $index => $item)
-              <tr>
-                  <td>{{ $index + 1 }}</td>
-                  <td>{{ $item->user ? $item->user->nama : '-' }}</td>
-                  <td>{{ $item->no_wa }}</td>
-                  <td>{{ $item->alamat }}</td>
-              </tr>
-          @endforeach
+      <tbody class="text-center">
+        @foreach($data as $item)
+        <tr>
+          <td>{{ $item->idpemilik }}</td>
+          <td>{{ $item->user->nama ?? '-' }}</td>
+          <td>{{ $item->alamat }}</td>
+          <td>{{ $item->no_wa }}</td>
+          <td>
+            <a href="{{ route('pemilik.edit', $item->idpemilik) }}" class="btn btn-warning btn-sm">✏️ Edit</a>
+            <a href="{{ route('pemilik.delete', $item->idpemilik) }}" 
+               onclick="return confirm('Yakin mau hapus data ini?')" 
+               class="btn btn-danger btn-sm">🗑️ Hapus</a>
+          </td>
+        </tr>
+        @endforeach
       </tbody>
-  </table>
-</body>
-</html>
+    </table>
+  </div>
+</section>
+@endsection

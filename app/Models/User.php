@@ -35,9 +35,9 @@ class User extends Authenticatable
     }
 
     // 🔹 Relasi ke tabel role_user
-    public function RoleUser()
+    public function roleUser()
     {
-        return $this->hasOne(RoleUser::class, 'iduser', 'iduser');
+        return $this->hasMany(RoleUser::class, 'iduser', 'iduser');
     }
 
     // 🔹 Relasi langsung ke tabel role (many-to-many)
@@ -45,4 +45,11 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Role::class, 'role_user', 'iduser', 'idrole');
     }
+
+     public function pemilik()
+    {
+        return $this->hasOne(Pemilik::class, 'iduser', 'iduser');
+    }
+    
 }
+

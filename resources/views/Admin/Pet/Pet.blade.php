@@ -1,46 +1,49 @@
 @extends('layout.main')
 
-@section('content')
-<section class="py-5" style="background-color:#fffaf5;">
-  <div class="container text-center">
-    <h2 class="fw-bold mb-4" style="color:#2563eb;">🐾 Daftar Hewan Peliharaan RSHP</h2>
+@section('title', 'Daftar Hewan Peliharaan RSHP')
 
-    <div class="table-responsive shadow-lg rounded-4">
-      <table class="table table-bordered align-middle">
-        <thead style="background:linear-gradient(to right,#60a5fa,#a78bfa,#f472b6); color:white;">
-          <tr>
-            <th>ID</th>
-            <th>Nama Hewan</th>
-            <th>Tanggal Lahir</th>
-            <th>Warna / Tanda</th>
-            <th>Jenis Kelamin</th>
-            <th>Ras Hewan</th>
-            <th>Pemilik</th>
-          </tr>
-        </thead>
-        <tbody style="background-color:white;">
-          @foreach($data as $p)
-          <tr>
-            <td>{{ $p->idpet }}</td>
-            <td>{{ $p->nama }}</td>
-            <td>{{ $p->tanggal_lahir }}</td>
-            <td>{{ $p->warna_tanda }}</td>
-            <td>
-              @if($p->jenis_kelamin == 'L')
-                Jantan ♂
-              @elseif($p->jenis_kelamin == 'P')
-                Betina ♀
-              @else
-                -
-              @endif
-            </td>
-            <td>{{ $p->rasHewan->nama_ras ?? '-' }}</td>
-            <td>{{ $p->pemilik->user->name ?? '-' }}</td>
-          </tr>
-          @endforeach
-        </tbody>
-      </table>
-    </div>
+@section('content')
+<div class="container py-5">
+  <h2 class="text-center fw-bold text-primary mb-4">🐾 Daftar Hewan Peliharaan RSHP</h2>
+
+  <div class="text-end mb-3">
+    <a href="{{ route('pet.create') }}" class="btn btn-primary">+ Tambah Hewan</a>
   </div>
-</section>
+
+  @if(session('success'))
+    <div class="alert alert-success">{{ session('success') }}</div>
+  @endif
+
+  <table class="table table-bordered text-center align-middle shadow-sm bg-white">
+    <thead class="table-primary">
+      <tr>
+        <th>ID</th>
+        <th>Nama</th>
+        <th>Tanggal Lahir</th>
+        <th>Warna/Tanda</th>
+        <th>Jenis Kelamin</th>
+        <th>Ras Hewan</th>
+        <th>Pemilik</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach($data as $item)
+      <tr>
+        <td>{{ $item->idpet }}</td>
+        <td>{{ $item->nama }}</td>
+        <td>{{ $item->tanggal_lahir }}</td>
+        <td>{{ $item->warna_tanda }}</td>
+        <td>{{ $item->jenis_kelamin == 'L' ? 'Jantan' : 'Betina' }}</td>
+        <td>{{ $item->rasHewan->nama_ras ?? '-' }}</td>
+        <td>{{ $item->pemilik->user->nama ?? '-' }}</td>
+        <td>
+          <a href="{{ route('pet.edit', $item->idpet) }}" class="btn btn-warning btn-sm">✏️ Edit</a>
+          <a href="{{ route('pet.delete', $item->idpet) }}" onclick="return confirm('Yakin ingin hapus data ini?')" class="btn btn-danger btn-sm">🗑 Hapus</a>
+        </td>
+      </tr>
+      @endforeach
+    </tbody>
+  </table>
+</div>
 @endsection

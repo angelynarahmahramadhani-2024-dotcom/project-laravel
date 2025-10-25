@@ -482,6 +482,24 @@
   transform: translateY(-1px);
 }
 
+// Role Badges
+.bg-admin {
+  background-color: #c04a7fff;
+}
+
+.bg-dokter {
+  background-color: #93c5fd;
+}
+
+.bg-perawat {
+  background-color: #86efac;
+}
+
+.bg-resepsionis {
+  background-color: #fbbf24;
+}
+
+
   </style>
 </head>
 <body>

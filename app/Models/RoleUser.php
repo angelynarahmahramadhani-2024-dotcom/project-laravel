@@ -13,21 +13,18 @@ class RoleUser extends Model
     protected $primaryKey = 'idrole_user';
     public $timestamps = false;
 
-    protected $fillable = [
-        'iduser',
-        'idrole',
-        'status',
-    ];
+    protected $fillable = ['iduser', 'idrole', 'status'];
+
+    // Relasi ke tabel role
+    public function role()
+    {
+        // tambahkan parameter ketiga 'idrole' biar eksplisit
+        return $this->belongsTo(Role::class, 'idrole', 'idrole');
+    }
 
     // Relasi ke tabel user
     public function user()
     {
         return $this->belongsTo(User::class, 'iduser', 'iduser');
-    }
-
-    // Relasi ke tabel role
-    public function role()
-    {
-        return $this->belongsTo(Role::class, 'idrole', 'idrole');
     }
 }
