@@ -11,7 +11,13 @@ use App\Http\Controllers\Admin\KodeTindakanTerapiController;
 use App\Http\Controllers\Admin\PetController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\RoleUserController;
+use Illuminate\Support\Facades\Auth;
 
+Route::get('/cekkoneksi', [SiteController::class, 'cekkoneksi'])->name('cekkoneksi');
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
 
 Route::get('/', [SiteController::class, 'home'])->name('home');
 Route::get('/layanan', [SiteController::class, 'layanan'])->name('layanan');
@@ -89,5 +95,6 @@ Route::post('/roleuser/store', [RoleUserController::class, 'store'])->name('role
 Route::get('/roleuser/delete/{id}', [RoleUserController::class, 'destroy'])->name('roleuser.delete');
 Route::get('/roleuser/status/{id}', [RoleUserController::class, 'updateStatus'])->name('roleuser.status');
 
-Route::get('/cekkoneksi', [SiteController::class, 'cekkoneksi'])->name('cekkoneksi');
+Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+
 

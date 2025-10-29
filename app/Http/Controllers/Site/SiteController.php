@@ -29,7 +29,7 @@ class SiteController extends Controller
 
     public function login()
     {
-        return view('admin.main.login');
+        return view('auth.login');
     }
 
     public function index()

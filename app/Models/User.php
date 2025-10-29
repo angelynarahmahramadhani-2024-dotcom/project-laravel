@@ -43,7 +43,7 @@ class User extends Authenticatable
     // 🔹 Relasi langsung ke tabel role (many-to-many)
     public function role()
     {
-        return $this->belongsToMany(Role::class, 'role_user', 'iduser', 'idrole');
+        return $this->belongsTo(Role::class, 'role_user', 'iduser', 'idrole');
     }
 
      public function pemilik()
