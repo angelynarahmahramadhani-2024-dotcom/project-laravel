@@ -14,4 +14,9 @@ class Role extends Model
     public $timestamps = false;
 
     protected $fillable = ['nama_role', 'deskripsi'];
+
+    public function user ()
+    {
+        return $this->belongsToMany(User::class, 'role_user', 'idrole', 'iduser');
+    }
 }
