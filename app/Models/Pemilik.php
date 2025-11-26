@@ -14,8 +14,10 @@ class Pemilik extends Model
     public $timestamps = false;
 
     protected $fillable = [
+        'idpemilik',
         'iduser',
         'alamat',
+        'telepon',
         'no_wa'
     ];
 
@@ -27,6 +29,12 @@ class Pemilik extends Model
 
     // Relasi ke pet (pemilik punya banyak hewan)
     public function pet()
+    {
+        return $this->hasMany(Pet::class, 'idpemilik', 'idpemilik');
+    }
+
+    // Alias untuk pets
+    public function pets()
     {
         return $this->hasMany(Pet::class, 'idpemilik', 'idpemilik');
     }

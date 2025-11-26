@@ -21,18 +21,17 @@ class KategoriController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nama_kategori' => 'required|string|max:100',
-        ]);
+        // VALIDASI
+        $validated = $this->validateKategori($request);
 
-        $nextId = Kategori::max('idkategori') + 1;
+        // FORMAT
+        $validated['nama_kategori'] = $this->formatNamaKategori($validated['nama_kategori']);
 
-        Kategori::create([
-            'idkategori' => $nextId,
-            'nama_kategori' => $request->nama_kategori,
-        ]);
+        // SIMPAN VIA HELPER
+        $this->createKategori($validated);
 
-        return redirect('/Kategori')->with('success', '✅ Kategori baru berhasil ditambahkan!');
+        return redirect()->route('admin.kategori.index')
+            ->with('success', '✅ Kategori baru berhasil ditambahkan!');
     }
 
     public function edit($id)
@@ -43,21 +42,55 @@ class KategoriController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'nama_kategori' => 'required|string|max:100',
-        ]);
+        // VALIDASI
+        $validated = $this->validateKategori($request);
+
+        // FORMAT
+        $validated['nama_kategori'] = $this->formatNamaKategori($validated['nama_kategori']);
 
         $kategori = Kategori::findOrFail($id);
-        $kategori->update(['nama_kategori' => $request->nama_kategori]);
+        $kategori->update($validated);
 
-        return redirect('/Kategori')->with('success', '✏️ Kategori berhasil diperbarui!');
+        return redirect()->route('admin.kategori.index')
+            ->with('success', '✏️ Kategori berhasil diperbarui!');
     }
 
     public function destroy($id)
     {
-        $kategori = Kategori::findOrFail($id);
-        $kategori->delete();
+        Kategori::findOrFail($id)->delete();
 
-        return redirect('/Kategori')->with('success', '🗑️ Kategori berhasil dihapus!');
+        return redirect()->route('admin.kategori.index')
+            ->with('success', '🗑️ Kategori berhasil dihapus!');
+    }
+
+    /* ============================================================
+        VALIDASI (SESUI MODUL 11)
+    ============================================================ */
+    private function validateKategori($request)
+    {
+        return $request->validate([
+            'nama_kategori' => 'required|string|max:100|min:3',
+        ]);
+    }
+
+    /* ============================================================
+        HELPER CREATE
+    ============================================================ */
+    private function createKategori($data)
+    {
+        $nextId = Kategori::max('idkategori') + 1;
+
+        Kategori::create([
+            'idkategori' => $nextId,
+            'nama_kategori' => $data['nama_kategori'],
+        ]);
+    }
+
+    /* ============================================================
+        HELPER FORMAT NAMA
+    ============================================================ */
+    private function formatNamaKategori($text)
+    {
+        return ucwords(strtolower($text));
     }
 }

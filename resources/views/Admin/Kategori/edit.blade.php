@@ -1,22 +1,45 @@
-@extends('layout.main')
+@extends('layouts.lte.main')
 
-@section('title', 'Edit Kategori | RSHP UNAIR')
+@section('title', 'Edit Kategori')
+
+@section('page-title', 'Edit Kategori')
+
+@section('breadcrumb')
+    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('admin.kategori.index') }}">Kategori</a></li>
+    <li class="breadcrumb-item active">Edit</li>
+@endsection
 
 @section('content')
-<div class="container py-5">
-  <h2 class="fw-bold text-center mb-4" style="color:#2563eb;">Edit Kategori 🐾</h2>
-
-  <form action="{{ route('kategori.update', $kategori->idkategori) }}" method="POST" class="mx-auto" style="max-width:500px;">
-    @csrf
-    <div class="mb-3">
-      <label class="form-label fw-semibold">Nama Kategori</label>
-      <input type="text" name="nama_kategori" value="{{ $kategori->nama_kategori }}" class="form-control" required>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card card-warning">
+            <div class="card-header">
+                <h3 class="card-title">Form Edit Kategori</h3>
+            </div>
+            <form action="{{ route('admin.kategori.update', $kategori->idkategori) }}" method="POST">
+                @csrf
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="nama_kategori">Nama Kategori <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control @error('nama_kategori') is-invalid @enderror" 
+                               id="nama_kategori" name="nama_kategori" placeholder="Masukkan nama kategori" 
+                               value="{{ old('nama_kategori', $kategori->nama_kategori) }}" required>
+                        @error('nama_kategori')
+                            <span class="invalid-feedback">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-warning">
+                        <i class="fas fa-save"></i> Update
+                    </button>
+                    <a href="{{ route('admin.kategori.index') }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Kembali
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
-
-    <div class="d-flex justify-content-between">
-      <a href="{{ route('kategori.index') }}" class="btn btn-secondary">⬅️ Kembali</a>
-      <button type="submit" class="btn btn-primary">💾 Simpan Perubahan</button>
-    </div>
-  </form>
 </div>
 @endsection

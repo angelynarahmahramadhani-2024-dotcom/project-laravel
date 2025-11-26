@@ -17,53 +17,83 @@ class RasHewanController extends Controller
 
     public function create()
     {
-        $jenis = JenisHewan::all(); // untuk dropdown
+        $jenis = JenisHewan::all();
         return view('Admin.rashewan.create', compact('jenis'));
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nama_ras' => 'required|string|max:100',
-            'idjenis_hewan' => 'required|exists:jenis_hewan,idjenis_hewan',
-        ]);
+        // Validasi via helper
+        $validated = $this->validateRasHewan($request);
 
-        RasHewan::create([
-            'nama_ras' => $request->nama_ras,
-            'idjenis_hewan' => $request->idjenis_hewan,
-        ]);
+        // Format Nama
+        $validated['nama_ras'] = $this->formatNamaRas($validated['nama_ras']);
 
-        return redirect()->route('rashewan.index')->with('success', '✅ Ras hewan berhasil ditambahkan!');
+        // Insert via helper
+        $this->createRasHewan($validated);
+
+        return redirect()->route('admin.rashewan.index')
+            ->with('success', '✅ Ras hewan berhasil ditambahkan!');
     }
 
     public function edit($id)
     {
         $ras = RasHewan::findOrFail($id);
         $jenis = JenisHewan::all();
+
         return view('Admin.rashewan.edit', compact('ras', 'jenis'));
     }
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'nama_ras' => 'required|string|max:100',
-            'idjenis_hewan' => 'required|exists:jenis_hewan,idjenis_hewan',
-        ]);
+        // Validasi via helper
+        $validated = $this->validateRasHewan($request);
+
+        // Format nama
+        $validated['nama_ras'] = $this->formatNamaRas($validated['nama_ras']);
 
         $ras = RasHewan::findOrFail($id);
-        $ras->update([
-            'nama_ras' => $request->nama_ras,
-            'idjenis_hewan' => $request->idjenis_hewan,
-        ]);
+        $ras->update($validated);
 
-        return redirect()->route('rashewan.index')->with('success', '✏️ Data berhasil diperbarui!');
+        return redirect()->route('admin.rashewan.index')
+            ->with('success', '✏️ Data berhasil diperbarui!');
     }
 
     public function destroy($id)
     {
-        $ras = RasHewan::findOrFail($id);
-        $ras->delete();
+        RasHewan::findOrFail($id)->delete();
 
-        return redirect()->route('rashewan.index')->with('success', '🗑️ Data berhasil dihapus!');
+        return redirect()->route('admin.rashewan.index')
+            ->with('success', '🗑️ Data berhasil dihapus!');
+    }
+
+    /* ============================================================
+        VALIDASI SESUAI MODUL
+    ============================================================ */
+    private function validateRasHewan($request)
+    {
+        return $request->validate([
+            'nama_ras' => 'required|string|max:100|min:3',
+            'idjenis_hewan' => 'required|exists:jenis_hewan,idjenis_hewan',
+        ]);
+    }
+
+    /* ============================================================
+        HELPER INSERT DATA
+    ============================================================ */
+    private function createRasHewan($data)
+    {
+        RasHewan::create([
+            'nama_ras' => $data['nama_ras'],
+            'idjenis_hewan' => $data['idjenis_hewan'],
+        ]);
+    }
+
+    /* ============================================================
+        HELPER FORMAT NAMA
+    ============================================================ */
+    private function formatNamaRas($text)
+    {
+        return ucwords(strtolower($text));
     }
 }

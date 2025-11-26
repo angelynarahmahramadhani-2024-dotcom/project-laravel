@@ -65,5 +65,151 @@
       </form>
     </div>
   </div>
+
+<style>
+/* 💜 Background gradient sama kayak halaman Layanan */
+.contact-section {
+  background: linear-gradient(120deg, #6a5cf6 0%, #9a60f9 100%);
+  color: white;
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+  text-align: center;
+}
+
+/* ✨ Judul dan deskripsi utama */
+.contact-section h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #ffffffff;
+  margin-bottom: 1rem;
+}
+
+.contact-section p.text-muted {
+  color: rgba(0, 0, 0, 1) !important;
+  font-size: 1.05rem;
+  margin-bottom: 3rem;
+}
+
+/* 🧭 Bagian Info Kontak Tanpa Card */
+.row.justify-content-center.g-4 {
+  max-width: 800px;
+  margin: 0 auto 3rem;
+}
+
+.row.justify-content-center.g-4 .col-md-4 {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 2rem 1rem;
+  color: #000000ff;
+  backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+}
+
+.row.justify-content-center.g-4 .col-md-4:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-4px);
+}
+
+.row.justify-content-center.g-4 i {
+  color: #000000ff;
+  font-size: 2rem;
+  margin-bottom: 0.8rem;
+}
+
+.row.justify-content-center.g-4 h6 {
+  color: #000000ff;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+
+.row.justify-content-center.g-4 p {
+  color: #ffffffff;
+  font-size: 0.95rem;
+}
+
+/* 🗺️ MAP — Lebar & di Tengah */
+.ratio {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.ratio iframe {
+  width: 100%;
+  height: 450px;
+  border: 0;
+}
+
+/* 💌 Form Kontak */
+.contact-form {
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 2.2rem;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+  margin-top: 4rem;
+  max-width: 650px;
+}
+
+.contact-form h4 {
+  color: #6a5cf6;
+  font-weight: 700;
+}
+
+.contact-form .form-label {
+  font-weight: 600;
+  color: #444;
+}
+
+.contact-form .form-control {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.contact-form .form-control:focus {
+  border-color: #6a5cf6;
+  box-shadow: 0 0 6px rgba(106, 92, 246, 0.3);
+}
+
+.contact-form .btn-primary {
+  background-color: #6a5cf6;
+  border-color: #6a5cf6;
+  transition: all 0.3s ease;
+}
+
+.contact-form .btn-primary:hover {
+  background-color: #593df7;
+  border-color: #593df7;
+}
+
+/* 📱 Responsif */
+@media (max-width: 992px) {
+  .contact-section {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  .row.justify-content-center.g-4 {
+    gap: 1rem;
+  }
+
+  .row.justify-content-center.g-4 .col-md-4 {
+    margin-bottom: 1rem;
+  }
+
+  .ratio {
+    max-width: 100%;
+  }
+
+  .contact-form {
+    padding: 1.8rem;
+  }
+}
+</style>
+
+
 </section>
 @endsection

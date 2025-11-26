@@ -16,19 +16,31 @@ class Pet extends Model
     protected $fillable = [
         'nama',
         'tanggal_lahir',
-        'warna_tanda',
+        'warna',
         'jenis_kelamin',
         'idpemilik',
+        'idjenis_hewan',
         'idras_hewan'
     ];
 
     public function pemilik()
     {
-        return $this->belongsTo(Pemilik::class, 'idpemilik');
+        return $this->belongsTo(Pemilik::class, 'idpemilik', 'idpemilik');
+    }
+
+    public function jenisHewan()
+    {
+        return $this->belongsTo(JenisHewan::class, 'idjenis_hewan', 'idjenis_hewan');
     }
 
     public function rasHewan()
     {
-        return $this->belongsTo(RasHewan::class, 'idras_hewan');
+        return $this->belongsTo(RasHewan::class, 'idras_hewan', 'idras_hewan');
+    }
+
+    // Relasi ke temu_dokter
+    public function temuDokter()
+    {
+        return $this->hasMany(TemuDokter::class, 'idpet', 'idpet');
     }
 }

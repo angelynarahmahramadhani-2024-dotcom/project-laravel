@@ -1,45 +1,94 @@
-@extends('layout.main')
+@extends('layouts.lte.main')
 
-@section('title', 'Daftar Kategori | RSHP UNAIR')
+@section('title', 'Kategori')
+
+@section('page-title', 'Kategori')
+
+@section('breadcrumb')
+    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+    <li class="breadcrumb-item active">Kategori</li>
+@endsection
 
 @section('content')
-<section class="py-5" style="background-color:#fffaf5;">
-  <div class="container">
-    <h2 class="fw-bold text-center mb-4" style="color:#2563eb;">🐾 Daftar Kategori</h2>
-
-    @if(session('success'))
-      <div class="alert alert-success text-center">{{ session('success') }}</div>
-    @endif
-
-    <div class="text-end mb-3">
-      <a href="{{ route('kategori.create') }}" class="btn btn-primary">+ Tambah Kategori</a>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Data Kategori</h3>
+                <div class="card-tools">
+                    <a href="{{ route('admin.kategori.create') }}" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus"></i> Tambah Data
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                <table id="tableKategori" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th style="width: 10px">#</th>
+                            <th>Nama Kategori</th>
+                            <th style="width: 200px">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($data as $index => $item)
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $item->nama_kategori }}</td>
+                            <td>
+                                <a href="{{ route('admin.kategori.edit', $item->idkategori) }}" class="btn btn-warning btn-sm">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <form action="{{ route('admin.kategori.delete', $item->idkategori) }}" method="GET" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash"></i> Hapus
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="3" class="text-center">Tidak ada data</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-
-    <table class="table table-bordered table-striped align-middle text-center shadow-sm">
-      <thead style="background:linear-gradient(to right,#60a5fa,#a78bfa,#f472b6); color:white;">
-        <tr>
-          <th>ID</th>
-          <th>Nama Kategori</th>
-          <th>Aksi</th>
-        </tr>
-      </thead>
-      <tbody style="background-color:white;">
-        @forelse($data as $item)
-        <tr>
-          <td>{{ $item->idkategori }}</td>
-          <td>{{ $item->nama_kategori }}</td>
-          <td>
-            <a href="{{ route('kategori.edit', $item->idkategori) }}" class="btn btn-warning btn-sm">✏️ Edit</a>
-            <a href="{{ route('kategori.delete', $item->idkategori) }}" 
-               onclick="return confirm('Yakin mau hapus kategori ini?')" 
-               class="btn btn-danger btn-sm">🗑️ Hapus</a>
-          </td>
-        </tr>
-        @empty
-        <tr><td colspan="3" class="text-muted">Belum ada data kategori.</td></tr>
-        @endforelse
-      </tbody>
-    </table>
-  </div>
-</section>
+</div>
 @endsection
+
+@push('styles')
+<!-- DataTables -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.bootstrap4.min.css">
+@endpush
+
+@push('scripts')
+<!-- DataTables  & Plugins -->
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.4.1/js/responsive.bootstrap4.min.js"></script>
+<script>
+    $(function () {
+        $("#tableKategori").DataTable({
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": false,
+            "language": {
+                "search": "Cari:",
+                "paginate": {
+                    "previous": "Sebelumnya",
+                    "next": "Selanjutnya"
+                },
+                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                "infoEmpty": "Menampilkan 0 sampai 0 dari 0 data",
+                "zeroRecords": "Tidak ada data yang ditemukan",
+                "infoFiltered": "(disaring dari _MAX_ total data)"
+            }
+        });
+    });
+</script>
+@endpush

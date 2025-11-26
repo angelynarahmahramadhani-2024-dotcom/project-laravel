@@ -27,7 +27,7 @@
         </div>
 
         <div class="hidden md:flex items-center space-x-8">
-          <a href="{{ route('home') }}" class="text-gray-700 hover:text-purple-600">Beranda</a>
+          <a href="{{ route('landingpage') }}" class="text-gray-700 hover:text-purple-600">Beranda</a>
           <a href="{{ route('layanan') }}" class="text-gray-700 hover:text-purple-600">Layanan</a>
           <a href="{{ route('struktur') }}" class="text-gray-700 hover:text-purple-600">Struktur</a>
           <a href="{{ route('kontak') }}" class="text-gray-700 hover:text-purple-600">Kontak</a>

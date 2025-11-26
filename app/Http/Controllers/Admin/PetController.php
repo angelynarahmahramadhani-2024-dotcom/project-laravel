@@ -10,14 +10,14 @@ use App\Models\RasHewan;
 
 class PetController extends Controller
 {
-    // ✅ Menampilkan daftar pet
+    // LIST DATA
     public function index()
     {
         $data = Pet::with(['pemilik.user', 'rasHewan'])->get();
         return view('Admin.Pet.pet', compact('data'));
     }
 
-    // ✅ Form tambah pet
+    // FORM CREATE
     public function create()
     {
         $pemilik = Pemilik::with('user')->get();
@@ -25,23 +25,23 @@ class PetController extends Controller
         return view('Admin.Pet.create', compact('pemilik', 'ras'));
     }
 
-    // ✅ Simpan data baru
+    // SIMPAN DATA BARU
     public function store(Request $request)
     {
-        $request->validate([
-            'nama' => 'required',
-            'tanggal_lahir' => 'nullable|date',
-            'warna_tanda' => 'nullable|string|max:255',
-            'jenis_kelamin' => 'required',
-            'idpemilik' => 'required|integer',
-            'idras_hewan' => 'required|integer',
-        ]);
+        // VALIDASI via helper
+        $validated = $this->validatePet($request);
 
-        Pet::create($request->all());
-        return redirect()->route('pet.index')->with('success', 'Data hewan berhasil ditambahkan.');
+        // FORMAT NAMA hewan via helper
+        $validated['nama'] = $this->formatNamaPet($validated['nama']);
+
+        // SIMPAN VIA HELPER
+        $this->createPet($validated);
+
+        return redirect()->route('admin.pet.index')
+            ->with('success', '✅ Data hewan berhasil ditambahkan.');
     }
 
-    // ✅ Form edit
+    // FORM EDIT
     public function edit($id)
     {
         $data = Pet::findOrFail($id);
@@ -50,28 +50,66 @@ class PetController extends Controller
         return view('Admin.Pet.edit', compact('data', 'pemilik', 'ras'));
     }
 
-    // ✅ Update data
+    // UPDATE DATA
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'nama' => 'required',
-            'tanggal_lahir' => 'nullable|date',
-            'warna_tanda' => 'nullable|string|max:255',
-            'jenis_kelamin' => 'required',
-            'idpemilik' => 'required|integer',
-            'idras_hewan' => 'required|integer',
-        ]);
+        // VALIDASI
+        $validated = $this->validatePet($request);
+
+        // FORMAT NAMA hewan
+        $validated['nama'] = $this->formatNamaPet($validated['nama']);
 
         $data = Pet::findOrFail($id);
-        $data->update($request->all());
+        $data->update($validated);
 
-        return redirect()->route('pet.index')->with('success', 'Data hewan berhasil diperbarui.');
+        return redirect()->route('admin.pet.index')
+            ->with('success', '✏️ Data hewan berhasil diperbarui.');
     }
 
-    // ✅ Hapus data
+    // HAPUS DATA
     public function destroy($id)
     {
         Pet::findOrFail($id)->delete();
-        return redirect()->route('pet.index')->with('success', 'Data hewan berhasil dihapus.');
+
+        return redirect()->route('admin.pet.index')
+            ->with('success', '🗑️ Data hewan berhasil dihapus.');
+    }
+
+    /* ============================================================
+        VALIDASI PET
+    ============================================================ */
+    private function validatePet($request)
+    {
+        return $request->validate([
+            'nama' => 'required|string|max:100|min:2',
+            'tanggal_lahir' => 'nullable|date',
+            'warna_tanda' => 'nullable|string|max:255',
+            'jenis_kelamin' => 'required|in:L,P',
+            'idpemilik' => 'required|integer|exists:pemilik,idpemilik',
+            'idras_hewan' => 'required|integer|exists:ras_hewan,idras_hewan',
+        ]);
+    }
+
+    /* ============================================================
+        HELPER INSERT PET
+    ============================================================ */
+    private function createPet($data)
+    {
+        Pet::create([
+            'nama' => $data['nama'],
+            'tanggal_lahir' => $data['tanggal_lahir'] ?? null,
+            'warna_tanda' => $data['warna_tanda'] ?? null,
+            'jenis_kelamin' => $data['jenis_kelamin'],
+            'idpemilik' => $data['idpemilik'],
+            'idras_hewan' => $data['idras_hewan'],
+        ]);
+    }
+
+    /* ============================================================
+        HELPER FORMAT NAMA PET
+    ============================================================ */
+    private function formatNamaPet($text)
+    {
+        return ucwords(strtolower(trim($text)));
     }
 }

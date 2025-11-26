@@ -8,56 +8,95 @@ use App\Models\Role;
 
 class RoleController extends Controller
 {
-    // ✅ Menampilkan daftar role
+    // LIST DATA
     public function index()
     {
         $data = Role::all();
         return view('Admin.Role.role', compact('data'));
     }
 
-    // ✅ Form tambah
+    // FORM CREATE
     public function create()
     {
         return view('Admin.Role.create');
     }
 
-    // ✅ Simpan data baru
+    // SIMPAN DATA BARU
     public function store(Request $request)
     {
-        $request->validate([
-            'nama_role' => 'required|max:100',
-            'deskripsi' => 'nullable|max:255',
-        ]);
+        // VALIDASI via helper
+        $validated = $this->validateRole($request);
 
-        Role::create($request->all());
-        return redirect()->route('role.index')->with('success', 'Role berhasil ditambahkan.');
+        // FORMAT NAMA via helper
+        $validated['nama_role'] = $this->formatNamaRole($validated['nama_role']);
+
+        // SIMPAN VIA HELPER
+        $this->createRole($validated);
+
+        return redirect()->route('admin.role.index')
+            ->with('success', '✅ Role berhasil ditambahkan.');
     }
 
-    // ✅ Form edit
+    // FORM EDIT
     public function edit($id)
     {
         $data = Role::findOrFail($id);
         return view('Admin.Role.edit', compact('data'));
     }
 
-    // ✅ Update data
+    // UPDATE DATA
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'nama_role' => 'required|max:100',
-            'deskripsi' => 'nullable|max:255',
-        ]);
+        // VALIDASI
+        $validated = $this->validateRole($request);
+
+        // FORMAT
+        $validated['nama_role'] = $this->formatNamaRole($validated['nama_role']);
 
         $data = Role::findOrFail($id);
-        $data->update($request->all());
+        $data->update($validated);
 
-        return redirect()->route('role.index')->with('success', 'Role berhasil diperbarui.');
+        return redirect()->route('admin.role.index')
+            ->with('success', '✏️ Role berhasil diperbarui.');
     }
 
-    // ✅ Hapus data
+    // HAPUS DATA
     public function destroy($id)
     {
         Role::findOrFail($id)->delete();
-        return redirect()->route('role.index')->with('success', 'Role berhasil dihapus.');
+
+        return redirect()->route('admin.role.index')
+            ->with('success', '🗑️ Role berhasil dihapus.');
+    }
+
+
+    /* ============================================================
+        VALIDASI (Sesuai Modul 11)
+    ============================================================ */
+    private function validateRole($request)
+    {
+        return $request->validate([
+            'nama_role' => 'required|string|max:100|min:3',
+            'deskripsi' => 'nullable|string|max:255',
+        ]);
+    }
+
+    /* ============================================================
+        HELPER INSERT ROLE
+    ============================================================ */
+    private function createRole($data)
+    {
+        Role::create([
+            'nama_role' => $data['nama_role'],
+            'deskripsi' => $data['deskripsi'] ?? null,
+        ]);
+    }
+
+    /* ============================================================
+        HELPER FORMAT
+    ============================================================ */
+    private function formatNamaRole($text)
+    {
+        return ucwords(strtolower(trim($text)));
     }
 }

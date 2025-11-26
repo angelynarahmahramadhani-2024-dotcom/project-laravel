@@ -4,59 +4,107 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\JenisHewan;
+use Illuminate\Support\Facades\DB;
 
 class JenisHewanController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        $data = JenisHewan::all();
-        return view('Admin.jenishewan.JenisHewan', compact('data'));
+        $jenisHewan = DB::table('jenis_hewan')->get();
+        return view('admin.jenis_hewan.index', compact('jenisHewan'));
     }
 
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
-        return view('Admin.jenishewan.create');
+        return view('admin.jenis_hewan.create');
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
         $request->validate([
-            'nama_jenis_hewan' => 'required|string|max:100',
+            'nama_jenis_hewan' => 'required|string|max:100|min:3'
+        ], [
+            'nama_jenis_hewan.required' => 'Nama jenis hewan wajib diisi',
+            'nama_jenis_hewan.min' => 'Minimal 3 karakter',
         ]);
 
-        JenisHewan::create([
-            'nama_jenis_hewan' => $request->nama_jenis_hewan,
+        DB::table('jenis_hewan')->insert([
+            'nama_jenis_hewan' => ucwords(strtolower($request->nama_jenis_hewan))
         ]);
 
-        return redirect()->route('jenishewan.index')->with('success', '✅ Jenis hewan berhasil ditambahkan!');
+        return redirect()->route('admin.jenishewan.index')
+            ->with('success', 'Jenis hewan berhasil ditambahkan.');
     }
 
-    public function edit($id)
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
     {
-        $jenis = JenisHewan::findOrFail($id);
-        return view('Admin.jenishewan.edit', compact('jenis'));
+        $jenisHewan = DB::table('jenis_hewan')->where('idjenis_hewan', $id)->first();
+        
+        if (!$jenisHewan) {
+            return redirect()->route('admin.jenishewan.index')
+                ->with('error', 'Data tidak ditemukan.');
+        }
+
+        return view('admin.jenis_hewan.show', compact('jenisHewan'));
     }
 
-    public function update(Request $request, $id)
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        $jenisHewan = DB::table('jenis_hewan')->where('idjenis_hewan', $id)->first();
+        
+        if (!$jenisHewan) {
+            return redirect()->route('admin.jenishewan.index')
+                ->with('error', 'Data tidak ditemukan.');
+        }
+
+        return view('admin.jenis_hewan.edit', compact('jenisHewan'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
     {
         $request->validate([
-            'nama_jenis_hewan' => 'required|string|max:100',
+            'nama_jenis_hewan' => 'required|string|max:100|min:3'
+        ], [
+            'nama_jenis_hewan.required' => 'Nama jenis hewan wajib diisi',
+            'nama_jenis_hewan.min' => 'Minimal 3 karakter',
         ]);
 
-        $jenis = JenisHewan::findOrFail($id);
-        $jenis->update([
-            'nama_jenis_hewan' => $request->nama_jenis_hewan,
-        ]);
+        DB::table('jenis_hewan')
+            ->where('idjenis_hewan', $id)
+            ->update([
+                'nama_jenis_hewan' => ucwords(strtolower($request->nama_jenis_hewan))
+            ]);
 
-        return redirect()->route('jenishewan.index')->with('success', '✏️ Data berhasil diperbarui!');
+        return redirect()->route('admin.jenishewan.index')
+            ->with('success', 'Jenis hewan berhasil diupdate.');
     }
 
-    public function destroy($id)
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
     {
-        $jenis = JenisHewan::findOrFail($id);
-        $jenis->delete();
+        DB::table('jenis_hewan')->where('idjenis_hewan', $id)->delete();
 
-        return redirect()->route('jenishewan.index')->with('success', '🗑️ Data berhasil dihapus!');
+        return redirect()->route('admin.jenishewan.index')
+            ->with('success', 'Jenis hewan berhasil dihapus.');
     }
 }

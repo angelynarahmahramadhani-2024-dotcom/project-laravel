@@ -23,23 +23,18 @@ class PemilikController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'no_wa' => 'required|string|max:45',
-            'alamat' => 'required|string|max:100',
-            'iduser' => 'required|integer',
-        ]);
+        // VALIDASI
+        $validated = $this->validatePemilik($request);
 
-        // Karena idpemilik bukan auto increment, kita buat manual
-        $nextId = Pemilik::max('idpemilik') + 1;
+        // FORMAT
+        $validated['alamat'] = $this->formatAlamat($validated['alamat']);
+        $validated['no_wa'] = $this->formatNomorWa($validated['no_wa']);
 
-        Pemilik::create([
-            'idpemilik' => $nextId,
-            'no_wa' => $request->no_wa,
-            'alamat' => $request->alamat,
-            'iduser' => $request->iduser,
-        ]);
+        // CREATE VIA HELPER
+        $this->createPemilik($validated);
 
-        return redirect()->route('pemilik.index')->with('success', '✅ Data pemilik berhasil ditambahkan!');
+        return redirect()->route('admin.pemilik.index')
+            ->with('success', '✅ Data pemilik berhasil ditambahkan!');
     }
 
     public function edit($id)
@@ -51,25 +46,64 @@ class PemilikController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'no_wa' => 'required|string|max:45',
-            'alamat' => 'required|string|max:100',
-            'iduser' => 'required|integer',
-        ]);
+        // VALIDASI
+        $validated = $this->validatePemilik($request);
+
+        // FORMAT
+        $validated['alamat'] = $this->formatAlamat($validated['alamat']);
+        $validated['no_wa'] = $this->formatNomorWa($validated['no_wa']);
 
         $pemilik = Pemilik::findOrFail($id);
-        $pemilik->update([
-            'no_wa' => $request->no_wa,
-            'alamat' => $request->alamat,
-            'iduser' => $request->iduser,
-        ]);
+        $pemilik->update($validated);
 
-        return redirect()->route('pemilik.index')->with('success', '✏️ Data pemilik berhasil diperbarui!');
+        return redirect()->route('admin.pemilik.index')
+            ->with('success', '✏️ Data pemilik berhasil diperbarui!');
     }
 
     public function destroy($id)
     {
         Pemilik::findOrFail($id)->delete();
-        return redirect()->route('pemilik.index')->with('success', '🗑️ Data pemilik berhasil dihapus!');
+        return redirect()->route('admin.pemilik.index')
+            ->with('success', '🗑️ Data pemilik berhasil dihapus!');
+    }
+
+    /* ============================================================
+        VALIDASI (WAJIB SESUAI MODUL 11)
+    ============================================================ */
+    private function validatePemilik($request)
+    {
+        return $request->validate([
+            'no_wa' => 'required|string|max:45',
+            'alamat' => 'required|string|max:100',
+            'iduser' => 'required|integer|exists:user,iduser',
+        ]);
+    }
+
+    /* ============================================================
+        HELPER INSERT DATA
+    ============================================================ */
+    private function createPemilik($data)
+    {
+        $nextId = Pemilik::max('idpemilik') + 1;
+
+        Pemilik::create([
+            'idpemilik' => $nextId,
+            'no_wa' => $data['no_wa'],
+            'alamat' => $data['alamat'],
+            'iduser' => $data['iduser'],
+        ]);
+    }
+
+    /* ============================================================
+        HELPER FORMAT DATA
+    ============================================================ */
+    private function formatAlamat($text)
+    {
+        return ucwords(strtolower($text));
+    }
+
+    private function formatNomorWa($no)
+    {
+        return preg_replace('/\s+/', '', $no); // hapus spasi
     }
 }

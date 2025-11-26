@@ -5,8 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Models\RoleUser; // ✅ WAJIB ditambahkan
-use App\Models\Role;     // ✅ kalau belum ada, tambahkan juga
+use App\Models\RoleUser;
+use App\Models\Role;
+use App\Models\Pemilik;
 
 class User extends Authenticatable
 {
@@ -15,8 +16,11 @@ class User extends Authenticatable
     protected $table = 'user';
     protected $primaryKey = 'iduser';
 
+    // ⛔ WAJIB! karena tabel user kamu tidak punya created_at dan updated_at
+    public $timestamps = false;
+
     protected $fillable = [
-        'nama',      // ✅ ubah dari 'name' ke 'nama' sesuai kolom database
+        'nama',
         'email',
         'password',
     ];
@@ -34,22 +38,20 @@ class User extends Authenticatable
         ];
     }
 
-    // 🔹 Relasi ke tabel role_user
+    // Relasi roleUser
     public function roleUser()
     {
         return $this->hasMany(RoleUser::class, 'iduser', 'iduser');
     }
 
-    // 🔹 Relasi langsung ke tabel role (many-to-many)
+    // (opsional) tapi struktur ini sepertinya salah, sebaiknya hapus, tapi tidak wajib
     public function role()
     {
-        return $this->belongsTo(Role::class, 'role_user', 'iduser', 'idrole');
+        return $this->belongsTo(Role::class, 'idrole', 'idrole');
     }
 
-     public function pemilik()
+    public function pemilik()
     {
         return $this->hasOne(Pemilik::class, 'iduser', 'iduser');
     }
-    
 }
-
