@@ -59,7 +59,7 @@
                                 @foreach($pets as $pet)
                                     <option value="{{ $pet->idpet }}" 
                                             {{ old('idpet', $temuDokter->idpet) == $pet->idpet ? 'selected' : '' }}>
-                                        {{ $pet->nama }} - {{ $pet->pemilik->user->nama ?? 'N/A' }} ({{ $pet->jenisHewan->nama_jenis_hewan ?? '-' }})
+                                        {{ $pet->nama }} - {{ $pet->pemilik->user->nama ?? 'N/A' }} ({{ $pet->rasHewan->jenisHewan->nama_jenis_hewan ?? '-' }})
                                     </option>
                                 @endforeach
                             </select>

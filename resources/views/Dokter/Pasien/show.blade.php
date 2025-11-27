@@ -25,7 +25,7 @@
                     <div class="text-center mb-3">
                         <i class="fas fa-paw fa-5x text-info"></i>
                     </div>
-                    <h3 class="profile-username text-center">{{ $pet->nama_pet }}</h3>
+                    <h3 class="profile-username text-center">{{ $pet->nama }}</h3>
                     <p class="text-muted text-center">
                         {{ $pet->rasHewan->nama_ras ?? '-' }} 
                         ({{ $pet->rasHewan->jenisHewan->nama_jenis_hewan ?? '-' }})

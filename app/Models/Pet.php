@@ -16,10 +16,9 @@ class Pet extends Model
     protected $fillable = [
         'nama',
         'tanggal_lahir',
-        'warna',
+        'warna_tanda',
         'jenis_kelamin',
         'idpemilik',
-        'idjenis_hewan',
         'idras_hewan'
     ];
 
@@ -28,9 +27,10 @@ class Pet extends Model
         return $this->belongsTo(Pemilik::class, 'idpemilik', 'idpemilik');
     }
 
-    public function jenisHewan()
+    // Accessor untuk jenis hewan melalui relasi rasHewan
+    public function getJenisHewanAttribute()
     {
-        return $this->belongsTo(JenisHewan::class, 'idjenis_hewan', 'idjenis_hewan');
+        return $this->rasHewan ? $this->rasHewan->jenisHewan : null;
     }
 
     public function rasHewan()

@@ -14,6 +14,7 @@ class TemuDokter extends Model
         'no_urut',
         'waktu_daftar',
         'status',
+        'keluhan',
         'idpet',
         'idrole_user'
     ];

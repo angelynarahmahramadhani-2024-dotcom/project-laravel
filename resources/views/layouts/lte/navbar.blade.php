@@ -10,15 +10,15 @@
     
     // Konfigurasi berdasarkan role
     $roleConfig = [
-        'administrator' => ['dashboard' => 'admin.dashboard', 'label' => 'Administrator', 'color' => 'primary'],
-        'dokter' => ['dashboard' => 'dokter.dashboard', 'label' => 'Dokter', 'color' => 'info'],
-        'perawat' => ['dashboard' => 'perawat.dashboard', 'label' => 'Perawat', 'color' => 'success'],
-        'resepsionis' => ['dashboard' => 'resepsionis.dashboard', 'label' => 'Resepsionis', 'color' => 'warning'],
-        'pemilik' => ['dashboard' => 'pemilik.dashboard', 'label' => 'Pemilik', 'color' => 'secondary'],
+        'administrator' => ['dashboard' => 'admin.dashboard', 'label' => 'Administrator'],
+        'dokter' => ['dashboard' => 'dokter.dashboard', 'label' => 'Dokter'],
+        'perawat' => ['dashboard' => 'perawat.dashboard', 'label' => 'Perawat'],
+        'resepsionis' => ['dashboard' => 'resepsionis.dashboard', 'label' => 'Resepsionis'],
+        'pemilik' => ['dashboard' => 'pemilik.dashboard', 'label' => 'Pemilik'],
     ];
     $config = $roleConfig[$userRole] ?? $roleConfig['administrator'];
 @endphp
-<nav class="main-header navbar navbar-expand navbar-white navbar-light">
+<nav class="main-header navbar navbar-expand navbar-dark">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
         <li class="nav-item">
@@ -35,7 +35,7 @@
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
                 <i class="far fa-bell"></i>
-                <span class="badge badge-{{ $config['color'] }} navbar-badge">0</span>
+                <span class="badge navbar-badge">0</span>
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                 <span class="dropdown-item dropdown-header">Tidak ada notifikasi</span>

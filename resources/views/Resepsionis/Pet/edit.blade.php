@@ -43,7 +43,7 @@
                                 @foreach($pemiliks as $pemilik)
                                     <option value="{{ $pemilik->idpemilik }}" 
                                             {{ old('idpemilik', $pet->idpemilik) == $pemilik->idpemilik ? 'selected' : '' }}>
-                                        {{ $pemilik->user->nama ?? 'N/A' }} - {{ $pemilik->telepon }}
+                                        {{ $pemilik->user->nama ?? 'N/A' }} - {{ $pemilik->no_wa }}
                                     </option>
                                 @endforeach
                             </select>
@@ -66,19 +66,16 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="idjenis_hewan">Jenis Hewan <span class="text-danger">*</span></label>
-                                    <select name="idjenis_hewan" id="idjenis_hewan" 
-                                            class="form-control select2 @error('idjenis_hewan') is-invalid @enderror" required>
+                                    <select id="idjenis_hewan" 
+                                            class="form-control select2" required>
                                         <option value="">-- Pilih Jenis --</option>
                                         @foreach($jenisHewans as $jenis)
                                             <option value="{{ $jenis->idjenis_hewan }}" 
-                                                    {{ old('idjenis_hewan', $pet->idjenis_hewan) == $jenis->idjenis_hewan ? 'selected' : '' }}>
+                                                    {{ ($pet->rasHewan->idjenis_hewan ?? null) == $jenis->idjenis_hewan ? 'selected' : '' }}>
                                                 {{ $jenis->nama_jenis_hewan }}
                                             </option>
                                         @endforeach
                                     </select>
-                                    @error('idjenis_hewan')
-                                        <span class="invalid-feedback">{{ $message }}</span>
-                                    @enderror
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -126,11 +123,11 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="warna">Warna</label>
-                                    <input type="text" name="warna" id="warna" 
-                                           class="form-control @error('warna') is-invalid @enderror"
-                                           value="{{ old('warna', $pet->warna) }}" placeholder="Warna bulu">
-                                    @error('warna')
+                                    <label for="warna_tanda">Warna/Tanda</label>
+                                    <input type="text" name="warna_tanda" id="warna_tanda" 
+                                           class="form-control @error('warna_tanda') is-invalid @enderror"
+                                           value="{{ old('warna_tanda', $pet->warna_tanda) }}" placeholder="Warna bulu / tanda khusus">
+                                    @error('warna_tanda')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -196,7 +193,7 @@
         });
 
         // Trigger change to load ras on page load
-        @if($pet->idjenis_hewan)
+        @if($pet->rasHewan && $pet->rasHewan->idjenis_hewan)
             $('#idjenis_hewan').trigger('change');
         @endif
     });

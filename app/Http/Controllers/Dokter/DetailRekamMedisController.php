@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\DetailRekamMedis;
 use App\Models\RekamMedis;
 use App\Models\KodeTindakanTerapi;
+use App\Models\TemuDokter;
 
 class DetailRekamMedisController extends Controller
 {
@@ -30,8 +31,15 @@ class DetailRekamMedisController extends Controller
 
         DetailRekamMedis::create($validated);
 
+        // Update status reservasi menjadi Selesai (S)
+        $rekamMedis = RekamMedis::find($validated['idrekam_medis']);
+        if ($rekamMedis && $rekamMedis->idreservasi_dokter) {
+            TemuDokter::where('idreservasi_dokter', $rekamMedis->idreservasi_dokter)
+                ->update(['status' => 'S']);
+        }
+
         return redirect()->route('dokter.rekammedis.show', $validated['idrekam_medis'])
-            ->with('success', 'Detail tindakan berhasil ditambahkan.');
+            ->with('success', 'Detail tindakan berhasil ditambahkan. Status pasien diubah menjadi Selesai.');
     }
 
     // Form edit detail rekam medis

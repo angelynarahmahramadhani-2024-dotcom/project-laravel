@@ -96,11 +96,11 @@
                                     </td>
                                     <td>
                                         <strong>{{ $item->pet->nama ?? '-' }}</strong>
-                                        <br><small class="text-muted">{{ $item->pet->jenisHewan->nama_jenis_hewan ?? '-' }}</small>
+                                        <br><small class="text-muted">{{ $item->pet->rasHewan->jenisHewan->nama_jenis_hewan ?? '-' }}</small>
                                     </td>
                                     <td>
                                         {{ $item->pet->pemilik->user->nama ?? '-' }}
-                                        <br><small class="text-muted">{{ $item->pet->pemilik->telepon ?? '-' }}</small>
+                                        <br><small class="text-muted">{{ $item->pet->pemilik->no_wa ?? '-' }}</small>
                                     </td>
                                     <td>{{ $item->roleUser->user->nama ?? '-' }}</td>
                                     <td>{{ $item->waktu_daftar ? \Carbon\Carbon::parse($item->waktu_daftar)->format('H:i') : '-' }}</td>

@@ -25,7 +25,7 @@
                     <div class="text-center mb-3">
                         <i class="fas fa-paw fa-4x text-info"></i>
                     </div>
-                    <h4 class="text-center">{{ $temuDokter->pet->nama_pet ?? '-' }}</h4>
+                    <h4 class="text-center">{{ $temuDokter->pet->nama ?? '-' }}</h4>
                     <p class="text-muted text-center">
                         {{ $temuDokter->pet->rasHewan->nama_ras ?? '-' }}
                         ({{ $temuDokter->pet->rasHewan->jenisHewan->nama_jenis_hewan ?? '-' }})
@@ -131,6 +131,14 @@
                         </button>
                     </div>
                 </form>
+            </div>
+
+            <!-- Info -->
+            <div class="callout callout-info">
+                <h5><i class="fas fa-info-circle mr-2"></i>Informasi</h5>
+                <p class="mb-0">
+                    Setelah menyimpan rekam medis, Anda akan diarahkan ke halaman detail untuk menambahkan <strong>tindakan/terapi</strong>.
+                </p>
             </div>
         </div>
     </div>

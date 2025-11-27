@@ -27,7 +27,7 @@ class RoleUserController extends Controller
         // SIMPAN VIA HELPER
         $this->createRoleUser($validated);
 
-        return redirect()->route('roleuser.index')
+        return redirect()->route('admin.roleuser.index')
             ->with('success', '✅ Role berhasil ditambahkan ke user.');
     }
 
@@ -38,7 +38,7 @@ class RoleUserController extends Controller
         $roleUser->status = !$roleUser->status;
         $roleUser->save();
 
-        return redirect()->route('roleuser.index')
+        return redirect()->route('admin.roleuser.index')
             ->with('success', '✏️ Status role user berhasil diperbarui.');
     }
 
@@ -47,7 +47,7 @@ class RoleUserController extends Controller
     {
         RoleUser::findOrFail($id)->delete();
 
-        return redirect()->route('roleuser.index')
+        return redirect()->route('admin.roleuser.index')
             ->with('success', '🗑️ Role user berhasil dihapus.');
     }
 
@@ -57,8 +57,8 @@ class RoleUserController extends Controller
     private function validateRoleUser($request)
     {
         return $request->validate([
-            'iduser' => 'required|exists:users,id',
-            'idrole' => 'required|exists:roles,id',
+            'iduser' => 'required|exists:user,iduser',
+            'idrole' => 'required|exists:role,idrole',
             'status' => 'required|boolean',
         ]);
     }

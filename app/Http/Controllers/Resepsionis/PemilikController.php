@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Resepsionis;
 use App\Http\Controllers\Controller;
 use App\Models\Pemilik;
 use App\Models\User;
+use App\Models\RoleUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -12,37 +13,40 @@ class PemilikController extends Controller
 {
     public function index()
     {
-        $pemiliks = Pemilik::with(['user', 'pets'])->orderBy('idpemilik', 'desc')->get();
+        $pemiliks = Pemilik::with(['user', 'pets'])->orderBy('idpemilik', 'asc')->get();
         return view('Resepsionis.Pemilik.index', compact('pemiliks'));
     }
 
     public function create()
     {
-        return view('Resepsionis.Pemilik.create');
+        // Ambil user yang punya role pemilik (idrole=5) tapi belum terdaftar di tabel pemilik
+        $users = User::whereHas('roleUser', function($q) {
+                $q->where('idrole', 5); // role pemilik
+            })
+            ->whereDoesntHave('pemilik') // belum ada di tabel pemilik
+            ->get();
+        
+        return view('Resepsionis.Pemilik.create', compact('users'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'nama' => 'required|string|max:255',
-            'email' => 'required|email|unique:user,email',
-            'password' => 'required|min:6',
+            'iduser' => 'required|exists:user,iduser|unique:pemilik,iduser',
             'alamat' => 'nullable|string',
-            'telepon' => 'nullable|string|max:20',
+            'no_wa' => 'nullable|string|max:20',
         ]);
 
-        // Buat user dulu
-        $user = User::create([
-            'nama' => $request->nama,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        // Generate idpemilik (karena tidak auto increment)
+        $lastId = Pemilik::max('idpemilik') ?? 0;
+        $newId = $lastId + 1;
 
-        // Buat pemilik
+        // Buat pemilik dari user yang dipilih
         Pemilik::create([
+            'idpemilik' => $newId,
             'alamat' => $request->alamat,
-            'telepon' => $request->telepon,
-            'iduser' => $user->iduser,
+            'no_wa' => $request->no_wa,
+            'iduser' => $request->iduser,
         ]);
 
         return redirect()->route('resepsionis.pemilik.index')
@@ -63,7 +67,7 @@ class PemilikController extends Controller
             'nama' => 'required|string|max:255',
             'email' => 'required|email|unique:user,email,' . $pemilik->iduser . ',iduser',
             'alamat' => 'nullable|string',
-            'telepon' => 'nullable|string|max:20',
+            'no_wa' => 'nullable|string|max:20',
         ]);
 
         // Update user
@@ -82,7 +86,7 @@ class PemilikController extends Controller
         // Update pemilik
         $pemilik->update([
             'alamat' => $request->alamat,
-            'telepon' => $request->telepon,
+            'no_wa' => $request->no_wa,
         ]);
 
         return redirect()->route('resepsionis.pemilik.index')

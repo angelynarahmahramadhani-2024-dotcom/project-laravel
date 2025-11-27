@@ -8,73 +8,62 @@
         }
     }
     
-    // Konfigurasi sidebar berdasarkan role
+    // Konfigurasi sidebar - SEMUA ROLE PAKAI TEMA TEAL
     $sidebarConfig = [
         'administrator' => [
-            'sidebar_class' => 'sidebar-dark-primary',
-            'brand_class' => '',
             'brand_icon' => 'fas fa-paw',
             'brand_text' => 'Admin Panel',
             'user_icon' => 'fas fa-user-shield',
-            'user_color' => '#c2c7d0',
         ],
         'dokter' => [
-            'sidebar_class' => 'sidebar-dark-info',
-            'brand_class' => 'bg-info',
             'brand_icon' => 'fas fa-stethoscope',
             'brand_text' => 'Panel Dokter',
             'user_icon' => 'fas fa-user-md',
-            'user_color' => '#17a2b8',
         ],
         'perawat' => [
-            'sidebar_class' => 'sidebar-dark-success',
-            'brand_class' => 'bg-success',
             'brand_icon' => 'fas fa-user-nurse',
             'brand_text' => 'Panel Perawat',
             'user_icon' => 'fas fa-user-nurse',
-            'user_color' => '#28a745',
         ],
         'resepsionis' => [
-            'sidebar_class' => 'sidebar-dark-warning',
-            'brand_class' => 'bg-warning',
             'brand_icon' => 'fas fa-concierge-bell',
             'brand_text' => 'Panel Resepsionis',
             'user_icon' => 'fas fa-user-tie',
-            'user_color' => '#ffc107',
         ],
         'pemilik' => [
-            'sidebar_class' => 'sidebar-dark-secondary',
-            'brand_class' => 'bg-secondary',
             'brand_icon' => 'fas fa-user',
             'brand_text' => 'Panel Pemilik',
             'user_icon' => 'fas fa-user',
-            'user_color' => '#6c757d',
         ],
     ];
     $cfg = $sidebarConfig[$userRole] ?? $sidebarConfig['administrator'];
 @endphp
-<aside class="main-sidebar {{ $cfg['sidebar_class'] }} elevation-4">
+<aside class="main-sidebar elevation-4" style="background: linear-gradient(180deg, #0c5460 0%, #17a2b8 100%);">
     <!-- Brand Logo -->
-    <a href="{{ url('/') }}" class="brand-link {{ $cfg['brand_class'] }}">
-        <i class="{{ $cfg['brand_icon'] }} brand-image" style="font-size: 1.8rem; margin-left: 0.8rem; margin-top: 0.3rem;"></i>
-        <span class="brand-text font-weight-light">{{ $cfg['brand_text'] }}</span>
+    <a href="{{ url('/') }}" class="brand-link" style="background: rgba(0,0,0,0.1); border-bottom: 1px solid rgba(255,255,255,0.1);">
+        <i class="{{ $cfg['brand_icon'] }} brand-image text-white" style="font-size: 1.8rem; margin-left: 0.8rem; margin-top: 0.3rem;"></i>
+        <span class="brand-text font-weight-light text-white">{{ $cfg['brand_text'] }}</span>
     </a>
 
     <!-- Sidebar -->
     <div class="sidebar">
         <!-- Sidebar user panel -->
-        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex" style="border-bottom: 1px solid rgba(255,255,255,0.2);">
             <div class="image">
-                <i class="{{ $cfg['user_icon'] }}" style="font-size: 2rem; color: {{ $cfg['user_color'] }};"></i>
+                <i class="{{ $cfg['user_icon'] }}" style="font-size: 2rem; color: rgba(255,255,255,0.9);"></i>
             </div>
             <div class="info">
                 @if($userRole == 'dokter')
-                    <a href="{{ route('dokter.profil.index') }}" class="d-block">{{ Auth::user()->nama ?? 'User' }}</a>
+                    <a href="{{ route('dokter.profil.index') }}" class="d-block text-white">{{ Auth::user()->nama ?? 'User' }}</a>
+                @elseif($userRole == 'perawat')
+                    <a href="{{ route('perawat.profil.index') }}" class="d-block text-white">{{ Auth::user()->nama ?? 'User' }}</a>
+                @elseif($userRole == 'pemilik')
+                    <a href="{{ route('pemilik.profil.index') }}" class="d-block text-white">{{ Auth::user()->nama ?? 'User' }}</a>
                 @else
-                    <a href="#" class="d-block">{{ Auth::user()->nama ?? 'User' }}</a>
+                    <a href="#" class="d-block text-white">{{ Auth::user()->nama ?? 'User' }}</a>
                 @endif
-                <small style="color: {{ $cfg['user_color'] }};">
-                    <i class="fas fa-circle text-success" style="font-size: 8px;"></i> Online
+                <small style="color: #20c997;">
+                    <i class="fas fa-circle" style="font-size: 8px;"></i> Online
                 </small>
             </div>
         </div>
@@ -162,6 +151,21 @@
                             <p>Role User</p>
                         </a>
                     </li>
+                    
+                    <li class="nav-header">DATA STAF</li>
+                    
+                    <li class="nav-item">
+                        <a href="{{ route('admin.dokter.index') }}" class="nav-link {{ request()->routeIs('admin.dokter.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-user-md"></i>
+                            <p>Data Dokter</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('admin.perawat.index') }}" class="nav-link {{ request()->routeIs('admin.perawat.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-user-nurse"></i>
+                            <p>Data Perawat</p>
+                        </a>
+                    </li>
                 @endif
 
                 {{-- ============================================== --}}
@@ -172,6 +176,15 @@
                         <a href="{{ route('dokter.dashboard') }}" class="nav-link {{ request()->routeIs('dokter.dashboard') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p>Dashboard</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-header">PENDAFTARAN</li>
+                    
+                    <li class="nav-item">
+                        <a href="{{ route('dokter.antrian.index') }}" class="nav-link {{ request()->routeIs('dokter.antrian.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-clipboard-list"></i>
+                            <p>Antrian Hari Ini</p>
                         </a>
                     </li>
 
@@ -211,19 +224,36 @@
                         </a>
                     </li>
 
+                    <li class="nav-header">PENDAFTARAN</li>
+                    
+                    <li class="nav-item">
+                        <a href="{{ route('perawat.antrian.index') }}" class="nav-link {{ request()->routeIs('perawat.antrian.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-clipboard-list"></i>
+                            <p>Antrian Hari Ini</p>
+                        </a>
+                    </li>
+
                     <li class="nav-header">LAYANAN</li>
                     
-                    {{-- Tambahkan menu perawat di sini --}}
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-notes-medical"></i>
-                            <p>Rawat Inap</p>
+                        <a href="{{ route('perawat.pasien.index') }}" class="nav-link {{ request()->routeIs('perawat.pasien.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-paw"></i>
+                            <p>Data Pasien</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-pills"></i>
-                            <p>Pemberian Obat</p>
+                        <a href="{{ route('perawat.rekammedis.index') }}" class="nav-link {{ request()->routeIs('perawat.rekammedis.*') || request()->routeIs('perawat.detailrekammedis.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-file-medical"></i>
+                            <p>Rekam Medis</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-header">AKUN</li>
+
+                    <li class="nav-item">
+                        <a href="{{ route('perawat.profil.index') }}" class="nav-link {{ request()->routeIs('perawat.profil.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-user"></i>
+                            <p>Profil Saya</p>
                         </a>
                     </li>
                 @endif
@@ -281,25 +311,36 @@
                         </a>
                     </li>
 
-                    <li class="nav-header">PET SAYA</li>
+                    <li class="nav-header">LAYANAN</li>
                     
-                    {{-- Tambahkan menu pemilik di sini --}}
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-paw"></i>
-                            <p>Data Pet</p>
+                        <a href="{{ route('pemilik.jadwal.index') }}" class="nav-link {{ request()->routeIs('pemilik.jadwal.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-calendar-check"></i>
+                            <p>Jadwal Temu Dokter</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{{ route('pemilik.rekammedis.index') }}" class="nav-link {{ request()->routeIs('pemilik.rekammedis.*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-file-medical-alt"></i>
                             <p>Riwayat Medis</p>
                         </a>
                     </li>
+
+                    <li class="nav-header">HEWAN SAYA</li>
+                    
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-calendar-check"></i>
-                            <p>Jadwal Kontrol</p>
+                        <a href="{{ route('pemilik.pet.index') }}" class="nav-link {{ request()->routeIs('pemilik.pet.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-paw"></i>
+                            <p>Hewan Peliharaan</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-header">AKUN</li>
+                    
+                    <li class="nav-item">
+                        <a href="{{ route('pemilik.profil.index') }}" class="nav-link {{ request()->routeIs('pemilik.profil.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-user"></i>
+                            <p>Profil Saya</p>
                         </a>
                     </li>
                 @endif

@@ -13,15 +13,16 @@
 <!-- Welcome Banner -->
 <div class="row mb-4">
     <div class="col-12">
-        <div class="card bg-gradient-primary">
-            <div class="card-body">
+        <div class="card" style="background: linear-gradient(135deg, #17a2b8 0%, #0c5460 100%);">
+            <div class="card-body py-4">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <h2 class="text-white mb-1">Selamat Datang, {{ Auth::user()->nama ?? 'Admin' }}! 👋</h2>
                         <p class="text-white-50 mb-0">Kelola sistem Rumah Sakit Hewan dengan mudah dan efisien.</p>
+                        <span class="badge badge-light mt-2"><i class="fas fa-crown mr-1"></i>Administrator</span>
                     </div>
                     <div class="d-none d-md-block">
-                        <i class="fas fa-hospital-user fa-4x text-white-50"></i>
+                        <i class="fas fa-user-shield fa-5x" style="color: rgba(255,255,255,0.3);"></i>
                     </div>
                 </div>
             </div>
@@ -32,57 +33,57 @@
 <!-- Small Box Stats -->
 <div class="row">
     <div class="col-lg-3 col-6">
-        <div class="small-box bg-info">
-            <div class="inner">
+        <div class="small-box" style="background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);">
+            <div class="inner text-white">
                 <h3>{{ $jumlahPet ?? 0 }}</h3>
                 <p>Total Hewan</p>
             </div>
             <div class="icon">
                 <i class="fas fa-paw"></i>
             </div>
-            <a href="{{ route('admin.pet.index') }}" class="small-box-footer">
+            <a href="{{ route('admin.pet.index') }}" class="small-box-footer text-white">
                 Lihat Detail <i class="fas fa-arrow-circle-right"></i>
             </a>
         </div>
     </div>
     <div class="col-lg-3 col-6">
-        <div class="small-box bg-success">
-            <div class="inner">
+        <div class="small-box" style="background: linear-gradient(135deg, #20c997 0%, #17a2b8 100%);">
+            <div class="inner text-white">
                 <h3>{{ $jumlahPemilik ?? 0 }}</h3>
                 <p>Total Pemilik</p>
             </div>
             <div class="icon">
                 <i class="fas fa-users"></i>
             </div>
-            <a href="{{ route('admin.pemilik.index') }}" class="small-box-footer">
+            <a href="{{ route('admin.pemilik.index') }}" class="small-box-footer text-white">
                 Lihat Detail <i class="fas fa-arrow-circle-right"></i>
             </a>
         </div>
     </div>
     <div class="col-lg-3 col-6">
-        <div class="small-box bg-warning">
-            <div class="inner">
+        <div class="small-box" style="background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);">
+            <div class="inner text-white">
                 <h3>{{ $jumlahJenis ?? 0 }}</h3>
                 <p>Jenis Hewan</p>
             </div>
             <div class="icon">
                 <i class="fas fa-dog"></i>
             </div>
-            <a href="{{ route('admin.jenishewan.index') }}" class="small-box-footer">
+            <a href="{{ route('admin.jenishewan.index') }}" class="small-box-footer text-white">
                 Lihat Detail <i class="fas fa-arrow-circle-right"></i>
             </a>
         </div>
     </div>
     <div class="col-lg-3 col-6">
-        <div class="small-box bg-danger">
-            <div class="inner">
+        <div class="small-box" style="background: linear-gradient(135deg, #e83e8c 0%, #dc3545 100%);">
+            <div class="inner text-white">
                 <h3>{{ $jumlahKategori ?? 0 }}</h3>
                 <p>Kategori</p>
             </div>
             <div class="icon">
                 <i class="fas fa-list-alt"></i>
             </div>
-            <a href="{{ route('admin.kategori.index') }}" class="small-box-footer">
+            <a href="{{ route('admin.kategori.index') }}" class="small-box-footer text-white">
                 Lihat Detail <i class="fas fa-arrow-circle-right"></i>
             </a>
         </div>

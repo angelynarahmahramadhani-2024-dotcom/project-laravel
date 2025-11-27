@@ -42,7 +42,7 @@
                                 @foreach($pemiliks as $pemilik)
                                     <option value="{{ $pemilik->idpemilik }}" 
                                             {{ old('idpemilik') == $pemilik->idpemilik ? 'selected' : '' }}>
-                                        {{ $pemilik->user->nama ?? 'N/A' }} - {{ $pemilik->telepon }}
+                                        {{ $pemilik->user->nama ?? 'N/A' }} - {{ $pemilik->no_wa }}
                                     </option>
                                 @endforeach
                             </select>
@@ -65,8 +65,8 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="idjenis_hewan">Jenis Hewan <span class="text-danger">*</span></label>
-                                    <select name="idjenis_hewan" id="idjenis_hewan" 
-                                            class="form-control select2 @error('idjenis_hewan') is-invalid @enderror" required>
+                                    <select id="idjenis_hewan" 
+                                            class="form-control select2" required>
                                         <option value="">-- Pilih Jenis --</option>
                                         @foreach($jenisHewans as $jenis)
                                             <option value="{{ $jenis->idjenis_hewan }}" 
@@ -75,9 +75,6 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    @error('idjenis_hewan')
-                                        <span class="invalid-feedback">{{ $message }}</span>
-                                    @enderror
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -125,11 +122,11 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="warna">Warna</label>
-                                    <input type="text" name="warna" id="warna" 
-                                           class="form-control @error('warna') is-invalid @enderror"
-                                           value="{{ old('warna') }}" placeholder="Warna bulu">
-                                    @error('warna')
+                                    <label for="warna_tanda">Warna/Tanda</label>
+                                    <input type="text" name="warna_tanda" id="warna_tanda" 
+                                           class="form-control @error('warna_tanda') is-invalid @enderror"
+                                           value="{{ old('warna_tanda') }}" placeholder="Warna bulu / tanda khusus">
+                                    @error('warna_tanda')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
                                 </div>

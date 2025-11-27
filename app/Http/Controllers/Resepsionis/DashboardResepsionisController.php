@@ -21,7 +21,7 @@ class DashboardResepsionisController extends Controller
         $antrianMenunggu = TemuDokter::whereDate('waktu_daftar', $today)->where('status', 'W')->count();
         
         // Antrian hari ini
-        $antrian = TemuDokter::with(['pet.pemilik', 'pet.jenisHewan', 'roleUser.user'])
+        $antrian = TemuDokter::with(['pet.pemilik', 'pet.rasHewan.jenisHewan', 'roleUser.user'])
             ->whereDate('waktu_daftar', $today)
             ->orderBy('no_urut', 'asc')
             ->get();

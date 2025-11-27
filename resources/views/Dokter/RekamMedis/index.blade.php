@@ -50,7 +50,7 @@
                                     <small class="text-muted">{{ $rm->created_at ? $rm->created_at->format('H:i') : '' }}</small>
                                 </td>
                                 <td>
-                                    <strong><i class="fas fa-paw text-info mr-1"></i>{{ $rm->temuDokter->pet->nama_pet ?? '-' }}</strong>
+                                    <strong><i class="fas fa-paw text-info mr-1"></i>{{ $rm->temuDokter->pet->nama ?? '-' }}</strong>
                                     <br>
                                     <small class="text-muted">{{ $rm->temuDokter->pet->rasHewan->nama_ras ?? '-' }}</small>
                                 </td>
@@ -67,11 +67,7 @@
                                 <td>
                                     <a href="{{ route('dokter.rekammedis.show', $rm->idrekam_medis) }}" 
                                        class="btn btn-info btn-sm" title="Detail">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-                                    <a href="{{ route('dokter.rekammedis.edit', $rm->idrekam_medis) }}" 
-                                       class="btn btn-warning btn-sm" title="Edit">
-                                        <i class="fas fa-edit"></i>
+                                        <i class="fas fa-eye"></i> Detail
                                     </a>
                                 </td>
                             </tr>

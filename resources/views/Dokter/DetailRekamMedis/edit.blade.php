@@ -38,7 +38,7 @@
 
                         <div class="alert alert-info">
                             <i class="fas fa-paw mr-2"></i>
-                            <strong>Pasien:</strong> {{ $detail->rekamMedis->temuDokter->pet->nama_pet ?? '-' }}
+                            <strong>Pasien:</strong> {{ $detail->rekamMedis->temuDokter->pet->nama ?? '-' }}
                         </div>
 
                         <div class="form-group">
@@ -53,7 +53,7 @@
                                 @foreach($kodeTindakan as $kt)
                                     <option value="{{ $kt->idkode_tindakan_terapi }}" 
                                         {{ old('idkode_tindakan_terapi', $detail->idkode_tindakan_terapi) == $kt->idkode_tindakan_terapi ? 'selected' : '' }}>
-                                        {{ $kt->kode }} - {{ $kt->nama_tindakan }}
+                                        {{ $kt->kode }} - {{ $kt->deskripsi_tindakan_terapi }}
                                     </option>
                                 @endforeach
                             </select>

@@ -13,7 +13,7 @@ class TemuDokterController extends Controller
 {
     public function index()
     {
-        $temuDokters = TemuDokter::with(['pet.pemilik.user', 'pet.jenisHewan', 'roleUser.user', 'roleUser.role'])
+        $temuDokters = TemuDokter::with(['pet.pemilik.user', 'pet.rasHewan.jenisHewan', 'roleUser.user', 'roleUser.role'])
             ->orderBy('waktu_daftar', 'desc')
             ->get();
         return view('Resepsionis.TemuDokter.index', compact('temuDokters'));
@@ -21,7 +21,7 @@ class TemuDokterController extends Controller
 
     public function create()
     {
-        $pets = Pet::with(['pemilik.user', 'jenisHewan'])->get();
+        $pets = Pet::with(['pemilik.user', 'rasHewan.jenisHewan'])->get();
         // Ambil dokter yang aktif (role_user dengan role dokter dan status aktif)
         $dokters = RoleUser::with('user')
             ->whereHas('role', function($q) {
@@ -38,6 +38,7 @@ class TemuDokterController extends Controller
         $request->validate([
             'idpet' => 'required|exists:pet,idpet',
             'idrole_user' => 'required|exists:role_user,idrole_user',
+            'keluhan' => 'nullable|string|max:1000',
         ]);
 
         // Generate no urut untuk hari ini
@@ -49,6 +50,7 @@ class TemuDokterController extends Controller
             'no_urut' => $noUrut,
             'waktu_daftar' => Carbon::now(),
             'status' => 'W', // W = Menunggu
+            'keluhan' => $request->keluhan,
             'idpet' => $request->idpet,
             'idrole_user' => $request->idrole_user,
         ]);
@@ -59,7 +61,7 @@ class TemuDokterController extends Controller
 
     public function show($id)
     {
-        $temuDokter = TemuDokter::with(['pet.pemilik.user', 'pet.jenisHewan', 'roleUser.user', 'rekamMedis'])
+        $temuDokter = TemuDokter::with(['pet.pemilik.user', 'pet.rasHewan.jenisHewan', 'roleUser.user', 'rekamMedis'])
             ->findOrFail($id);
         return view('Resepsionis.TemuDokter.show', compact('temuDokter'));
     }
@@ -67,7 +69,7 @@ class TemuDokterController extends Controller
     public function edit($id)
     {
         $temuDokter = TemuDokter::findOrFail($id);
-        $pets = Pet::with(['pemilik.user', 'jenisHewan'])->get();
+        $pets = Pet::with(['pemilik.user', 'rasHewan.jenisHewan'])->get();
         $dokters = RoleUser::with('user')
             ->whereHas('role', function($q) {
                 $q->where('nama_role', 'Dokter');
@@ -84,6 +86,7 @@ class TemuDokterController extends Controller
             'idpet' => 'required|exists:pet,idpet',
             'idrole_user' => 'required|exists:role_user,idrole_user',
             'status' => 'required|in:W,P,S,B',
+            'keluhan' => 'nullable|string|max:1000',
         ]);
 
         $temuDokter = TemuDokter::findOrFail($id);
@@ -91,6 +94,7 @@ class TemuDokterController extends Controller
             'idpet' => $request->idpet,
             'idrole_user' => $request->idrole_user,
             'status' => $request->status,
+            'keluhan' => $request->keluhan,
         ]);
 
         return redirect()->route('resepsionis.temudokter.index')
@@ -131,7 +135,7 @@ class TemuDokterController extends Controller
     public function antrian()
     {
         $today = Carbon::today();
-        $antrian = TemuDokter::with(['pet.pemilik.user', 'pet.jenisHewan', 'roleUser.user'])
+        $antrian = TemuDokter::with(['pet.pemilik.user', 'pet.rasHewan.jenisHewan', 'roleUser.user'])
             ->whereDate('waktu_daftar', $today)
             ->orderBy('no_urut', 'asc')
             ->get();

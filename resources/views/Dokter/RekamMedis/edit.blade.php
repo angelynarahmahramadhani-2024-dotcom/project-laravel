@@ -25,7 +25,7 @@
                     <div class="text-center mb-3">
                         <i class="fas fa-paw fa-4x text-info"></i>
                     </div>
-                    <h4 class="text-center">{{ $rekamMedis->temuDokter->pet->nama_pet ?? '-' }}</h4>
+                    <h4 class="text-center">{{ $rekamMedis->temuDokter->pet->nama ?? '-' }}</h4>
                     <p class="text-muted text-center">
                         {{ $rekamMedis->temuDokter->pet->rasHewan->nama_ras ?? '-' }}
                         ({{ $rekamMedis->temuDokter->pet->rasHewan->jenisHewan->nama_jenis_hewan ?? '-' }})

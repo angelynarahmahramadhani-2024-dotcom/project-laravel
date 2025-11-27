@@ -13,15 +13,23 @@
     <!-- Welcome Card -->
     <div class="row mb-4">
         <div class="col-12">
-            <div class="card bg-gradient-info">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="mr-4">
-                            <i class="fas fa-user-md fa-4x"></i>
+            <div class="card" style="background: linear-gradient(135deg, #17a2b8 0%, #0c5460 100%);">
+                <div class="card-body py-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <div class="mr-4">
+                                <div style="width: 80px; height: 80px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-stethoscope fa-3x text-white"></i>
+                                </div>
+                            </div>
+                            <div class="text-white">
+                                <h3 class="mb-1">Selamat Datang, Dr. {{ $user->nama }}!</h3>
+                                <p class="mb-0" style="opacity: 0.9;">{{ now()->translatedFormat('l, d F Y') }}</p>
+                                <span class="badge badge-light mt-2"><i class="fas fa-user-md mr-1"></i>Dokter Hewan</span>
+                            </div>
                         </div>
-                        <div>
-                            <h3 class="mb-1">Selamat Datang, Dr. {{ $user->nama }}!</h3>
-                            <p class="mb-0">{{ now()->translatedFormat('l, d F Y') }}</p>
+                        <div class="d-none d-md-block">
+                            <i class="fas fa-heartbeat fa-5x" style="color: rgba(255,255,255,0.2);"></i>
                         </div>
                     </div>
                 </div>
@@ -32,60 +40,60 @@
     <!-- Info Boxes -->
     <div class="row">
         <div class="col-lg-3 col-6">
-            <div class="small-box bg-info">
-                <div class="inner">
+            <div class="small-box" style="background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);">
+                <div class="inner text-white">
                     <h3>{{ $totalPasienHariIni }}</h3>
                     <p>Pasien Hari Ini</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-calendar-day"></i>
                 </div>
-                <a href="{{ route('dokter.pasien.index') }}" class="small-box-footer">
+                <a href="{{ route('dokter.pasien.index') }}" class="small-box-footer text-white">
                     Lihat Detail <i class="fas fa-arrow-circle-right"></i>
                 </a>
             </div>
         </div>
 
         <div class="col-lg-3 col-6">
-            <div class="small-box bg-warning">
-                <div class="inner">
+            <div class="small-box" style="background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);">
+                <div class="inner text-white">
                     <h3>{{ $pasienMenunggu }}</h3>
                     <p>Menunggu Pemeriksaan</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-clock"></i>
                 </div>
-                <a href="#antrianTable" class="small-box-footer">
+                <a href="#antrianTable" class="small-box-footer text-white">
                     Lihat Antrian <i class="fas fa-arrow-circle-right"></i>
                 </a>
             </div>
         </div>
 
         <div class="col-lg-3 col-6">
-            <div class="small-box bg-success">
-                <div class="inner">
+            <div class="small-box" style="background: linear-gradient(135deg, #20c997 0%, #17a2b8 100%);">
+                <div class="inner text-white">
                     <h3>{{ $pasienSelesai }}</h3>
                     <p>Pasien Selesai</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-check-circle"></i>
                 </div>
-                <a href="{{ route('dokter.rekammedis.index') }}" class="small-box-footer">
+                <a href="{{ route('dokter.rekammedis.index') }}" class="small-box-footer text-white">
                     Lihat Rekam Medis <i class="fas fa-arrow-circle-right"></i>
                 </a>
             </div>
         </div>
 
         <div class="col-lg-3 col-6">
-            <div class="small-box bg-primary">
-                <div class="inner">
+            <div class="small-box" style="background: linear-gradient(135deg, #0c5460 0%, #17a2b8 100%);">
+                <div class="inner text-white">
                     <h3>{{ $totalRekamMedis }}</h3>
                     <p>Total Rekam Medis</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-file-medical"></i>
                 </div>
-                <a href="{{ route('dokter.rekammedis.index') }}" class="small-box-footer">
+                <a href="{{ route('dokter.rekammedis.index') }}" class="small-box-footer text-white">
                     Lihat Semua <i class="fas fa-arrow-circle-right"></i>
                 </a>
             </div>
@@ -126,7 +134,7 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <strong>{{ $antrian->pet->nama_pet ?? '-' }}</strong>
+                                    <strong>{{ $antrian->pet->nama ?? '-' }}</strong>
                                     <br>
                                     <small class="text-muted">
                                         {{ $antrian->pet->rasHewan->nama_ras ?? '-' }} 
@@ -143,25 +151,19 @@
                                     </span>
                                 </td>
                                 <td>
-                                    @if($antrian->status == 'W' || $antrian->status == 'P')
-                                        @if($antrian->rekamMedis)
-                                            <a href="{{ route('dokter.rekammedis.show', $antrian->rekamMedis->idrekam_medis) }}" 
-                                               class="btn btn-info btn-sm">
-                                                <i class="fas fa-eye"></i> Lihat
-                                            </a>
-                                        @else
-                                            <a href="{{ route('dokter.rekammedis.create', $antrian->idreservasi_dokter) }}" 
-                                               class="btn btn-success btn-sm">
-                                                <i class="fas fa-plus"></i> Periksa
-                                            </a>
-                                        @endif
-                                    @elseif($antrian->status == 'S')
-                                        @if($antrian->rekamMedis)
-                                            <a href="{{ route('dokter.rekammedis.show', $antrian->rekamMedis->idrekam_medis) }}" 
-                                               class="btn btn-primary btn-sm">
-                                                <i class="fas fa-file-medical"></i> RM
-                                            </a>
-                                        @endif
+                                    @if($antrian->rekamMedis)
+                                        <a href="{{ route('dokter.detailrekammedis.create', $antrian->rekamMedis->idrekam_medis) }}" 
+                                           class="btn btn-success btn-sm">
+                                            <i class="fas fa-stethoscope"></i> Periksa
+                                        </a>
+                                        <a href="{{ route('dokter.rekammedis.show', $antrian->rekamMedis->idrekam_medis) }}" 
+                                           class="btn btn-info btn-sm">
+                                            <i class="fas fa-eye"></i> Lihat RM
+                                        </a>
+                                    @else
+                                        <span class="badge badge-warning">
+                                            <i class="fas fa-clock"></i> Menunggu RM
+                                        </span>
                                     @endif
                                 </td>
                             </tr>
@@ -199,7 +201,7 @@
                             <a href="{{ route('dokter.rekammedis.show', $rm->idrekam_medis) }}" class="text-dark">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
-                                        <strong>{{ $rm->temuDokter->pet->nama_pet ?? '-' }}</strong>
+                                        <strong>{{ $rm->temuDokter->pet->nama ?? '-' }}</strong>
                                         <br>
                                         <small class="text-muted">
                                             <i class="fas fa-user mr-1"></i>

@@ -87,12 +87,12 @@
                             </div>
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="telepon">Telepon <span class="text-danger">*</span></label>
-                                    <input type="text" name="telepon" id="telepon" 
-                                           class="form-control @error('telepon') is-invalid @enderror"
-                                           value="{{ old('telepon', $pemilik->telepon) }}" 
-                                           placeholder="Masukkan nomor telepon" required>
-                                    @error('telepon')
+                                    <label for="no_wa">No. WhatsApp <span class="text-danger">*</span></label>
+                                    <input type="text" name="no_wa" id="no_wa" 
+                                           class="form-control @error('no_wa') is-invalid @enderror"
+                                           value="{{ old('no_wa', $pemilik->no_wa) }}" 
+                                           placeholder="Masukkan nomor WhatsApp" required>
+                                    @error('no_wa')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -128,7 +128,7 @@
                                         @foreach($pemilik->pets as $pet)
                                         <tr>
                                             <td>{{ $pet->nama }}</td>
-                                            <td>{{ $pet->jenisHewan->nama_jenis_hewan ?? '-' }}</td>
+                                            <td>{{ $pet->rasHewan->jenisHewan->nama_jenis_hewan ?? '-' }}</td>
                                             <td>{{ $pet->rasHewan->nama_ras ?? '-' }}</td>
                                         </tr>
                                         @endforeach

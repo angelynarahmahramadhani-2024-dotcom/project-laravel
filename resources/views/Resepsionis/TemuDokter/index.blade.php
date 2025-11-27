@@ -65,7 +65,7 @@
                             </td>
                             <td>
                                 <strong>{{ $temu->pet->nama ?? '-' }}</strong>
-                                <br><small class="text-muted">{{ $temu->pet->jenisHewan->nama_jenis_hewan ?? '-' }}</small>
+                                <br><small class="text-muted">{{ $temu->pet->rasHewan->jenisHewan->nama_jenis_hewan ?? '-' }}</small>
                             </td>
                             <td>{{ $temu->pet->pemilik->user->nama ?? '-' }}</td>
                             <td>{{ $temu->roleUser->user->nama ?? '-' }}</td>

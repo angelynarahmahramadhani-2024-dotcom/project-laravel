@@ -59,7 +59,7 @@
                             </td>
                             <td>{{ $pet->pemilik->user->nama ?? '-' }}</td>
                             <td>
-                                <span class="badge badge-info">{{ $pet->jenisHewan->nama_jenis_hewan ?? '-' }}</span>
+                                <span class="badge badge-info">{{ $pet->rasHewan->jenisHewan->nama_jenis_hewan ?? '-' }}</span>
                             </td>
                             <td>{{ $pet->rasHewan->nama_ras ?? '-' }}</td>
                             <td>

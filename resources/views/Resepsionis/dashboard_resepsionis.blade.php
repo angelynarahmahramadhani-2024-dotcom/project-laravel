@@ -13,15 +13,23 @@
     <!-- Welcome Banner -->
     <div class="row mb-4">
         <div class="col-12">
-            <div class="card bg-gradient-warning">
-                <div class="card-body">
+            <div class="card" style="background: linear-gradient(135deg, #17a2b8 0%, #0c5460 100%);">
+                <div class="card-body py-4">
                     <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h2 class="text-white mb-1">Selamat Datang, {{ Auth::user()->nama ?? 'Resepsionis' }}! 👋</h2>
-                            <p class="text-white mb-0">Panel Resepsionis - Rumah Sakit Hewan</p>
+                        <div class="d-flex align-items-center">
+                            <div class="mr-4">
+                                <div style="width: 80px; height: 80px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-concierge-bell fa-3x text-white"></i>
+                                </div>
+                            </div>
+                            <div class="text-white">
+                                <h2 class="mb-1">Selamat Datang, {{ Auth::user()->nama ?? 'Resepsionis' }}! 👋</h2>
+                                <p class="mb-0" style="opacity: 0.9;">Panel Resepsionis - Rumah Sakit Hewan</p>
+                                <span class="badge badge-light mt-2"><i class="fas fa-headset mr-1"></i>Resepsionis</span>
+                            </div>
                         </div>
-                        <div>
-                            <i class="fas fa-concierge-bell fa-4x text-white-50"></i>
+                        <div class="d-none d-md-block">
+                            <i class="fas fa-clipboard-list fa-5x" style="color: rgba(255,255,255,0.2);"></i>
                         </div>
                     </div>
                 </div>
@@ -32,57 +40,57 @@
     <!-- Info Boxes -->
     <div class="row">
         <div class="col-lg-3 col-6">
-            <div class="small-box bg-info">
-                <div class="inner">
+            <div class="small-box" style="background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);">
+                <div class="inner text-white">
                     <h3>{{ $totalPemilik }}</h3>
                     <p>Total Pemilik</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-users"></i>
                 </div>
-                <a href="{{ route('resepsionis.pemilik.index') }}" class="small-box-footer">
+                <a href="{{ route('resepsionis.pemilik.index') }}" class="small-box-footer text-white">
                     Lihat Detail <i class="fas fa-arrow-circle-right"></i>
                 </a>
             </div>
         </div>
         <div class="col-lg-3 col-6">
-            <div class="small-box bg-success">
-                <div class="inner">
+            <div class="small-box" style="background: linear-gradient(135deg, #20c997 0%, #17a2b8 100%);">
+                <div class="inner text-white">
                     <h3>{{ $totalPet }}</h3>
                     <p>Total Pet</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-paw"></i>
                 </div>
-                <a href="{{ route('resepsionis.pet.index') }}" class="small-box-footer">
+                <a href="{{ route('resepsionis.pet.index') }}" class="small-box-footer text-white">
                     Lihat Detail <i class="fas fa-arrow-circle-right"></i>
                 </a>
             </div>
         </div>
         <div class="col-lg-3 col-6">
-            <div class="small-box bg-warning">
-                <div class="inner">
+            <div class="small-box" style="background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);">
+                <div class="inner text-white">
                     <h3>{{ $antrianHariIni }}</h3>
                     <p>Antrian Hari Ini</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-clipboard-list"></i>
                 </div>
-                <a href="{{ route('resepsionis.temudokter.antrian') }}" class="small-box-footer">
+                <a href="{{ route('resepsionis.temudokter.antrian') }}" class="small-box-footer text-white">
                     Lihat Antrian <i class="fas fa-arrow-circle-right"></i>
                 </a>
             </div>
         </div>
         <div class="col-lg-3 col-6">
-            <div class="small-box bg-danger">
-                <div class="inner">
+            <div class="small-box" style="background: linear-gradient(135deg, #e83e8c 0%, #dc3545 100%);">
+                <div class="inner text-white">
                     <h3>{{ $antrianMenunggu }}</h3>
                     <p>Menunggu Dipanggil</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-hourglass-half"></i>
                 </div>
-                <a href="{{ route('resepsionis.temudokter.antrian') }}" class="small-box-footer">
+                <a href="{{ route('resepsionis.temudokter.antrian') }}" class="small-box-footer text-white">
                     Lihat Detail <i class="fas fa-arrow-circle-right"></i>
                 </a>
             </div>
@@ -123,7 +131,7 @@
                                     </td>
                                     <td>
                                         <strong>{{ $item->pet->nama ?? '-' }}</strong>
-                                        <br><small class="text-muted">{{ $item->pet->jenisHewan->nama_jenis_hewan ?? '-' }}</small>
+                                        <br><small class="text-muted">{{ $item->pet->rasHewan->jenisHewan->nama_jenis_hewan ?? '-' }}</small>
                                     </td>
                                     <td>{{ $item->pet->pemilik->user->nama ?? '-' }}</td>
                                     <td>{{ $item->roleUser->user->nama ?? '-' }}</td>

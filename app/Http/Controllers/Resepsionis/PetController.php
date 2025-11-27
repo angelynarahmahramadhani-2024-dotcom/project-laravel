@@ -13,8 +13,8 @@ class PetController extends Controller
 {
     public function index()
     {
-        $pets = Pet::with(['pemilik.user', 'jenisHewan', 'rasHewan'])
-            ->orderBy('idpet', 'desc')
+        $pets = Pet::with(['pemilik.user', 'rasHewan.jenisHewan'])
+            ->orderBy('idpet', 'asc')
             ->get();
         return view('Resepsionis.Pet.index', compact('pets'));
     }
@@ -31,21 +31,19 @@ class PetController extends Controller
         $request->validate([
             'nama' => 'required|string|max:255',
             'idpemilik' => 'required|exists:pemilik,idpemilik',
-            'idjenis_hewan' => 'required|exists:jenis_hewan,idjenis_hewan',
-            'idras_hewan' => 'nullable|exists:ras_hewan,idras_hewan',
+            'idras_hewan' => 'required|exists:ras_hewan,idras_hewan',
             'jenis_kelamin' => 'nullable|in:L,P',
             'tanggal_lahir' => 'nullable|date',
-            'warna' => 'nullable|string|max:100',
+            'warna_tanda' => 'nullable|string|max:100',
         ]);
 
         Pet::create([
             'nama' => $request->nama,
             'idpemilik' => $request->idpemilik,
-            'idjenis_hewan' => $request->idjenis_hewan,
             'idras_hewan' => $request->idras_hewan,
             'jenis_kelamin' => $request->jenis_kelamin,
             'tanggal_lahir' => $request->tanggal_lahir,
-            'warna' => $request->warna,
+            'warna_tanda' => $request->warna_tanda,
         ]);
 
         return redirect()->route('resepsionis.pet.index')
@@ -54,7 +52,7 @@ class PetController extends Controller
 
     public function edit($id)
     {
-        $pet = Pet::findOrFail($id);
+        $pet = Pet::with('rasHewan')->findOrFail($id);
         $pemiliks = Pemilik::with('user')->get();
         $jenisHewans = JenisHewan::all();
         return view('Resepsionis.Pet.edit', compact('pet', 'pemiliks', 'jenisHewans'));
@@ -65,22 +63,20 @@ class PetController extends Controller
         $request->validate([
             'nama' => 'required|string|max:255',
             'idpemilik' => 'required|exists:pemilik,idpemilik',
-            'idjenis_hewan' => 'required|exists:jenis_hewan,idjenis_hewan',
-            'idras_hewan' => 'nullable|exists:ras_hewan,idras_hewan',
+            'idras_hewan' => 'required|exists:ras_hewan,idras_hewan',
             'jenis_kelamin' => 'nullable|in:L,P',
             'tanggal_lahir' => 'nullable|date',
-            'warna' => 'nullable|string|max:100',
+            'warna_tanda' => 'nullable|string|max:100',
         ]);
 
         $pet = Pet::findOrFail($id);
         $pet->update([
             'nama' => $request->nama,
             'idpemilik' => $request->idpemilik,
-            'idjenis_hewan' => $request->idjenis_hewan,
             'idras_hewan' => $request->idras_hewan,
             'jenis_kelamin' => $request->jenis_kelamin,
             'tanggal_lahir' => $request->tanggal_lahir,
-            'warna' => $request->warna,
+            'warna_tanda' => $request->warna_tanda,
         ]);
 
         return redirect()->route('resepsionis.pet.index')

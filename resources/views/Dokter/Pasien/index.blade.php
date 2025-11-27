@@ -37,7 +37,7 @@
                             <tr>
                                 <td>{{ $index + 1 }}</td>
                                 <td>
-                                    <strong><i class="fas fa-paw text-info mr-1"></i>{{ $pet->nama_pet }}</strong>
+                                    <strong><i class="fas fa-paw text-info mr-1"></i>{{ $pet->nama }}</strong>
                                 </td>
                                 <td>
                                     <span class="badge badge-primary">{{ $pet->rasHewan->jenisHewan->nama_jenis_hewan ?? '-' }}</span>

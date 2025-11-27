@@ -67,7 +67,7 @@
                                         </tr>
                                         <tr>
                                             <th>Jenis</th>
-                                            <td>{{ $temuDokter->pet->jenisHewan->nama_jenis_hewan ?? '-' }}</td>
+                                            <td>{{ $temuDokter->pet->rasHewan->jenisHewan->nama_jenis_hewan ?? '-' }}</td>
                                         </tr>
                                         <tr>
                                             <th>Ras</th>
@@ -112,7 +112,7 @@
                                     <table class="table table-sm table-borderless">
                                         <tr>
                                             <th width="30%">Telepon</th>
-                                            <td>{{ $temuDokter->pet->pemilik->telepon ?? '-' }}</td>
+                                            <td>{{ $temuDokter->pet->pemilik->no_wa ?? '-' }}</td>
                                         </tr>
                                         <tr>
                                             <th>Alamat</th>
@@ -124,15 +124,57 @@
                         </div>
                     </div>
 
-                    <!-- Keluhan -->
-                    @if($temuDokter->keluhan)
+                    <!-- Keluhan / Anamnesa dari Rekam Medis -->
+                    @if($temuDokter->rekamMedis && $temuDokter->rekamMedis->anamnesa)
                     <div class="card card-secondary card-outline">
                         <div class="card-header py-2">
-                            <h5 class="card-title mb-0"><i class="fas fa-comment-medical mr-2"></i>Keluhan / Catatan</h5>
+                            <h5 class="card-title mb-0"><i class="fas fa-comment-medical mr-2"></i>Keluhan / Anamnesa</h5>
                         </div>
                         <div class="card-body">
-                            <p class="mb-0">{{ $temuDokter->keluhan }}</p>
+                            <p class="mb-0">{{ $temuDokter->rekamMedis->anamnesa }}</p>
                         </div>
+                    </div>
+                    @endif
+
+                    <!-- Info Rekam Medis jika ada -->
+                    @if($temuDokter->rekamMedis)
+                    <div class="card card-primary card-outline">
+                        <div class="card-header py-2">
+                            <h5 class="card-title mb-0"><i class="fas fa-notes-medical mr-2"></i>Rekam Medis</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-sm table-borderless">
+                                @if($temuDokter->rekamMedis->temuan_klinis)
+                                <tr>
+                                    <th width="25%">Temuan Klinis</th>
+                                    <td>{{ $temuDokter->rekamMedis->temuan_klinis }}</td>
+                                </tr>
+                                @endif
+                                @if($temuDokter->rekamMedis->diagnosa)
+                                <tr>
+                                    <th>Diagnosa</th>
+                                    <td>{{ $temuDokter->rekamMedis->diagnosa }}</td>
+                                </tr>
+                                @endif
+                                @if($temuDokter->rekamMedis->dokter_pemeriksa)
+                                <tr>
+                                    <th>Dokter Pemeriksa</th>
+                                    <td>{{ $temuDokter->rekamMedis->dokter_pemeriksa }}</td>
+                                </tr>
+                                @endif
+                                @if($temuDokter->rekamMedis->created_at)
+                                <tr>
+                                    <th>Tanggal Periksa</th>
+                                    <td>{{ \Carbon\Carbon::parse($temuDokter->rekamMedis->created_at)->format('d/m/Y H:i') }}</td>
+                                </tr>
+                                @endif
+                            </table>
+                        </div>
+                    </div>
+                    @else
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        Belum ada rekam medis untuk reservasi ini.
                     </div>
                     @endif
 

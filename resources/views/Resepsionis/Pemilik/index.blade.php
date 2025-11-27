@@ -43,7 +43,7 @@
                         <th width="5%">No</th>
                         <th>Nama</th>
                         <th>Email</th>
-                        <th>Telepon</th>
+                        <th>No. WA</th>
                         <th>Alamat</th>
                         <th>Jumlah Pet</th>
                         <th width="15%">Aksi</th>
@@ -57,7 +57,7 @@
                                 <strong>{{ $pemilik->user->nama ?? '-' }}</strong>
                             </td>
                             <td>{{ $pemilik->user->email ?? '-' }}</td>
-                            <td>{{ $pemilik->telepon ?? '-' }}</td>
+                            <td>{{ $pemilik->no_wa ?? '-' }}</td>
                             <td>{{ Str::limit($pemilik->alamat, 50) }}</td>
                             <td>
                                 <span class="badge badge-info">{{ $pemilik->pets->count() }} Pet</span>

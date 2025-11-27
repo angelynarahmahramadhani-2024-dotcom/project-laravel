@@ -42,7 +42,7 @@
                                 @foreach($pets as $pet)
                                     <option value="{{ $pet->idpet }}" 
                                             {{ old('idpet') == $pet->idpet ? 'selected' : '' }}>
-                                        {{ $pet->nama }} - {{ $pet->pemilik->user->nama ?? 'N/A' }} ({{ $pet->jenisHewan->nama_jenis_hewan ?? '-' }})
+                                        {{ $pet->nama }} - {{ $pet->pemilik->user->nama ?? 'N/A' }} ({{ $pet->rasHewan->jenisHewan->nama_jenis_hewan ?? '-' }})
                                     </option>
                                 @endforeach
                             </select>
@@ -69,17 +69,6 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="waktu_daftar">Waktu Daftar</label>
-                            <input type="datetime-local" name="waktu_daftar" id="waktu_daftar" 
-                                   class="form-control @error('waktu_daftar') is-invalid @enderror"
-                                   value="{{ old('waktu_daftar', now()->format('Y-m-d\TH:i')) }}">
-                            @error('waktu_daftar')
-                                <span class="invalid-feedback">{{ $message }}</span>
-                            @enderror
-                            <small class="text-muted">Kosongkan untuk menggunakan waktu saat ini</small>
-                        </div>
-
-                        <div class="form-group">
                             <label for="keluhan">Keluhan / Catatan</label>
                             <textarea name="keluhan" id="keluhan" rows="3"
                                       class="form-control @error('keluhan') is-invalid @enderror"
@@ -93,8 +82,9 @@
                         <div class="callout callout-info">
                             <h5><i class="fas fa-info-circle mr-2"></i>Informasi</h5>
                             <p class="mb-0">
-                                Nomor urut akan diberikan secara otomatis berdasarkan antrian hari ini.
-                                Status awal akan diset sebagai <span class="badge badge-secondary">Menunggu</span>.
+                                <i class="fas fa-clock mr-1"></i> Waktu daftar akan diisi otomatis saat pendaftaran.<br>
+                                <i class="fas fa-sort-numeric-down mr-1"></i> Nomor urut akan diberikan secara otomatis berdasarkan antrian hari ini.<br>
+                                <i class="fas fa-hourglass-start mr-1"></i> Status awal akan diset sebagai <span class="badge badge-warning">Menunggu</span>.
                             </p>
                         </div>
                     </div>

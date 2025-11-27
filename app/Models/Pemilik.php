@@ -17,7 +17,6 @@ class Pemilik extends Model
         'idpemilik',
         'iduser',
         'alamat',
-        'telepon',
         'no_wa'
     ];
 
